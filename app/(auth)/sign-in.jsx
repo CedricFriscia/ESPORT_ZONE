@@ -1,10 +1,11 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FormField from "../../components/CustomFormField";
-import CustomButton from "../../components/CustomButton";
 import { Link } from "expo-router";
-import { icons } from "../../constants";
+import GoogleButton from "../../components/GoogleLogin";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const signIn = () => {
   const [form, setForm] = useState({
@@ -14,7 +15,25 @@ const signIn = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const submit = () => {};
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post("http://10.81.200.139:8000/login", {
+        name: form.email,
+        password: form.password,
+      });
+
+      console.log(response.data);
+
+      const token = response.data.access_token;
+
+      if (token != null) {
+        AsyncStorage.setItem("access_token", JSON.stringify(token));
+        window.location("/home");
+      }
+    } catch (error) {
+      console.error("Error during request:", error);
+    }
+  };
 
   return (
     <SafeAreaView className="bg-primary w-screen h-full p-4">
@@ -35,12 +54,38 @@ const signIn = () => {
             Enter your email and password to log in
           </Text>
 
-          <View className="w-11/12 bg-white flex justify-center items-center p-4 rounded">
-            <View className="border-2 border-slate-300 rounded w-fit">
-              <Link href="#" className="px-4 py-2">
-                <Text></Text>Continue with google
-              </Link>
+          <View className="w-11/12 bg-white flex justify-center border-2 border-indigo-400 items-center p-8 rounded-xl">
+            <GoogleButton />
+            <View className="flex">
+              <Text className="text-sm mt-6">or</Text>
             </View>
+            <FormField
+              placeholder="Charly@email.com"
+              value={form.email}
+              handleChangeText={(e) => setForm({ ...form, email: e })}
+            />
+            <FormField
+              placeholder="Password"
+              value={form.password}
+              handleChangeText={(e) => setForm({ ...form, password: e })}
+            />
+            <TouchableOpacity
+              className="inline-flex items-center mt-8 px-9 py-3 border-2 transition ease-in-out delay-150 duration-300"
+              activeOpacity={0.8}
+            >
+              <Text
+                className="text-xl font-mono font-semibold text-black"
+                onPress={handleSubmit}
+              >
+                BUTTON
+              </Text>
+            </TouchableOpacity>
+            <Text className="mt-4">
+              Don't have a n account ?{" "}
+              <Link href="/sign-up" className="text-blue-700">
+                Sign Up
+              </Link>{" "}
+            </Text>
           </View>
         </View>
       </ScrollView>

@@ -1,13 +1,14 @@
-import { View, Text, ScrollView, Image } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { images } from "../../constants";
 import FormField from "../../components/CustomFormField";
 import CustomButton from "../../components/CustomButton";
 import { Link } from "expo-router";
+import GoogleSignUp from "../../components/GoogleSignUp";
+import { icons } from "../../constants";
 
-const signUp = () => {
-  const [form, setform] = useState({
+const signIn = () => {
+  const [form, setForm] = useState({
     username: "",
     email: "",
     password: "",
@@ -18,52 +19,59 @@ const signUp = () => {
   const submit = () => {};
 
   return (
-    <SafeAreaView className="bg-primary h-full p-4">
-      <ScrollView>
-        <View className="w-full justify-center min-h-[80vh] pw-4 my-6">
-          <Image
-            source={images.logo}
-            resizeMode="contain"
-            className="w-[115px] h-[35px]"
-          />
-          <Text className="text-2xl text-white texte-semibold mt-10 font-psemibold">
-            Sign-Up to Aora
-          </Text>
-          <FormField
-            title="Username"
-            value={form.username}
-            handleChangeText={(e) => setform({ ...form, username: e })}
-            otherStyles="mt-10"
-          />
-          <FormField
-            title="Email"
-            value={form.email}
-            handleChangeText={(e) => setform({ ...form, email: e })}
-            otherStyles="mt-7"
-            keyboardType="email-adress"
-          />
-          <FormField
-            title="Password"
-            value={form.password}
-            handleChangeText={(e) => setform({ ...form, password: e })}
-            otherStyles="mt-7"
-          />
-          <CustomButton
-            title="Sign In"
-            handlePress={submit}
-            containerStyles="mt-7"
-            isLoading={isSubmitting}
-          />
-          <View className="justify-center pt-5 flex-row gap-2">
-            <Text className="test-lg text-gray-100 font-pregular">
-              Have an account already ?
+    <SafeAreaView className="bg-primary w-screen h-full p-4">
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View className="flex flex-col items-center">
+          <Text className="text-4xl text-white font-bold text-center mb-4">
+            <Text className="text-indigo-400">
+              {" "}
+              <Text className="text-secondary">E</Text>Z
             </Text>
-            <Link
-              href={"/sign-in"}
-              className="text-lg font-psemibold text-secondary "
+          </Text>
+
+          <Text className="text-white text-5xl text-center">
+            Sign in to your
+          </Text>
+          <Text className="text-white text-5xl text-center mb-4">Account</Text>
+          <Text className="text-white text-center mb-6">
+            Enter your email and password to log in
+          </Text>
+
+          <View className="w-11/12 bg-white flex justify-center border-2 border-indigo-400 items-center p-8 rounded-xl">
+            <GoogleSignUp />
+            <View className="flex">
+              <Text className="text-sm mt-6">or</Text>
+            </View>
+            <FormField
+              placeholder={"Username"}
+              value={form.username}
+              handleChangeText={(e) => setForm({ ...form, username: e })}
+            />
+            <FormField
+              placeholder={"Email"}
+              value={form.email}
+              handleChangeText={(e) => setForm({ ...form, email: e })}
+            />
+            <FormField
+              title="Password"
+              placeholder={"Password"}
+              value={form.password}
+              handleChangeText={(e) => setForm({ ...form, password: e })}
+            />
+            <TouchableOpacity
+              className="inline-flex items-center mt-8 px-9 py-3 border-2 transition ease-in-out delay-150 duration-300"
+              activeOpacity={0.8}
             >
-              Sign Up
-            </Link>
+              <Text className="text-xl font-mono font-semibold text-black">
+                BUTTON
+              </Text>
+            </TouchableOpacity>
+            <Text className="mt-4">
+              Don't have a n account ?{" "}
+              <Link href="/sign-in" className="text-blue-700">
+                Sign in
+              </Link>{" "}
+            </Text>
           </View>
         </View>
       </ScrollView>
@@ -71,4 +79,4 @@ const signUp = () => {
   );
 };
 
-export default signUp;
+export default signIn;
