@@ -2,36 +2,39 @@ import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FormField from "../../components/CustomFormField";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import GoogleButton from "../../components/GoogleLogin";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const signIn = () => {
+const SignIn = () => {
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+  const router = useRouter();
+
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
-
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async () => {
+    setIsSubmitting(true);
     try {
-      const response = await axios.post("http://10.81.200.139:8000/login", {
+      const response = await axios.post(`${apiUrl}/login`, {
         name: form.email,
         password: form.password,
       });
 
-      console.log(response.data);
-
       const token = response.data.access_token;
 
-      if (token != null) {
-        AsyncStorage.setItem("access_token", JSON.stringify(token));
-        window.location("/home");
+      if (token != null && response.status == 200) {
+        await AsyncStorage.setItem("access_token", JSON.stringify(token));
+        router.push("/home");
       }
     } catch (error) {
       console.error("Error during request:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -72,16 +75,14 @@ const signIn = () => {
             <TouchableOpacity
               className="inline-flex items-center mt-8 px-9 py-3 border-2 transition ease-in-out delay-150 duration-300"
               activeOpacity={0.8}
+              onPress={handleSubmit}
             >
-              <Text
-                className="text-xl font-mono font-semibold text-black"
-                onPress={handleSubmit}
-              >
+              <Text className="text-xl font-mono font-semibold text-black">
                 BUTTON
               </Text>
             </TouchableOpacity>
             <Text className="mt-4">
-              Don't have a n account ?{" "}
+              Don't have an account ?{" "}
               <Link href="/sign-up" className="text-blue-700">
                 Sign Up
               </Link>{" "}
@@ -93,4 +94,4 @@ const signIn = () => {
   );
 };
 
-export default signIn;
+export default SignIn;

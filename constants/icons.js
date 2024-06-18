@@ -12,6 +12,8 @@ import eyeHide from "../assets/icons/eye-hide.png";
 import eye from "../assets/icons/eye.png";
 import play from "../assets/icons/play.png";
 import google from "../assets/icons/google.png";
+import bookmarkBlack from "../assets/icons/bookmark-black-48.png";
+import bookmarkRed from "../assets/icons/bookmark-red-48.png";
 
 export default {
   play,
@@ -28,4 +30,6 @@ export default {
   eyeHide,
   eye,
   google,
+  bookmarkBlack,
+  bookmarkRed,
 };

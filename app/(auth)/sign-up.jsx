@@ -2,21 +2,45 @@ import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FormField from "../../components/CustomFormField";
-import CustomButton from "../../components/CustomButton";
 import { Link } from "expo-router";
 import GoogleSignUp from "../../components/GoogleSignUp";
-import { icons } from "../../constants";
+import axios from "axios";
+import { useRouter } from "expo-router";
 
-const signIn = () => {
+const SignUp = () => {
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
   const [form, setForm] = useState({
     username: "",
     email: "",
     password: "",
   });
 
+  const route = useRouter();
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const submit = () => {};
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    try {
+      const response = await axios.post(`apiUrl:8000/register`, {
+        name: form.username,
+        email: form.email,
+        password: form.password,
+      });
+
+      console.log(response.data);
+
+      if (response.status === 200) {
+        console.log("Register successfully");
+        route.push("/sign-in");
+      }
+    } catch (error) {
+      console.error("Error during request:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <SafeAreaView className="bg-primary w-screen h-full p-4">
@@ -29,12 +53,9 @@ const signIn = () => {
             </Text>
           </Text>
 
-          <Text className="text-white text-5xl text-center">
-            Sign in to your
-          </Text>
-          <Text className="text-white text-5xl text-center mb-4">Account</Text>
-          <Text className="text-white text-center mb-6">
-            Enter your email and password to log in
+          <Text className="text-white text-5xl text-center mb-4">Sign Up</Text>
+          <Text className="text-white  text-center mb-4">
+            Join thousands of E-Sport and gaming fans arround the world{" "}
           </Text>
 
           <View className="w-11/12 bg-white flex justify-center border-2 border-indigo-400 items-center p-8 rounded-xl">
@@ -61,16 +82,18 @@ const signIn = () => {
             <TouchableOpacity
               className="inline-flex items-center mt-8 px-9 py-3 border-2 transition ease-in-out delay-150 duration-300"
               activeOpacity={0.8}
+              onPress={handleSubmit}
+              disabled={isSubmitting}
             >
               <Text className="text-xl font-mono font-semibold text-black">
-                BUTTON
+                {isSubmitting ? "Submitting..." : "BUTTON"}
               </Text>
             </TouchableOpacity>
             <Text className="mt-4">
-              Don't have a n account ?{" "}
+              Don't have an account?{" "}
               <Link href="/sign-in" className="text-blue-700">
                 Sign in
-              </Link>{" "}
+              </Link>
             </Text>
           </View>
         </View>
@@ -79,4 +102,4 @@ const signIn = () => {
   );
 };
 
-export default signIn;
+export default SignUp;

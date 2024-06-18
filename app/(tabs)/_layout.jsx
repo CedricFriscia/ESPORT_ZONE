@@ -97,6 +97,22 @@ const TabsLayout = () => {
           ),
         }}
       />
+      <Tabs.Screen
+        name="article"
+        options={{
+          title: "Article",
+          headerShown: false,
+          href: null,
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon
+              icon={icons.profile}
+              color={color}
+              name="Profile"
+              focused={focused}
+            />
+          ),
+        }}
+      />
     </Tabs>
   );
 };

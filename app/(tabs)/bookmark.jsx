@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const bookmark = () => {
+const Bookmark = () => {
   return (
     <View>
       <Text>bookmark</Text>
@@ -9,4 +9,4 @@ const bookmark = () => {
   );
 };
 
-export default bookmark;
+export default Bookmark;
