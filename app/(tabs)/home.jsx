@@ -29,7 +29,6 @@ const Home = () => {
         <StyledView className="flex items-center border-b border-white">
           <StyledText className="text-4xl text-white font-bold text-center mb-4">
             <StyledText className="text-indigo-400">
-              {" "}
               <StyledText className="text-secondary">E</StyledText>Z
             </StyledText>
           </StyledText>

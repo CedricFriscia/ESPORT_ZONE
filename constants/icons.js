@@ -14,6 +14,11 @@ import play from "../assets/icons/play.png";
 import google from "../assets/icons/google.png";
 import bookmarkBlack from "../assets/icons/bookmark-black-48.png";
 import bookmarkRed from "../assets/icons/bookmark-red-48.png";
+import fire from "../assets/icons/fire.png";
+import controller from "../assets/icons/icons8-manette-50.png";
+import gaming from "../assets/icons/gaming.png";
+import check from "../assets/icons/check.png";
+import circle from "../assets/icons/circle.png";
 
 export default {
   play,
@@ -32,4 +37,8 @@ export default {
   google,
   bookmarkBlack,
   bookmarkRed,
+  fire,
+  controller,
+  gaming,
+  check,
 };
