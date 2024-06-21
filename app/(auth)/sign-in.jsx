@@ -28,7 +28,7 @@ const SignIn = () => {
       const token = response.data.access_token;
 
       if (token != null && response.status == 200) {
-        await AsyncStorage.setItem("access_token", JSON.stringify(token));
+        await AsyncStorage.setItem("access_token", token);
         router.push("/home");
       }
     } catch (error) {

@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 import { icons } from "../constants";
 import { images } from "../constants";
 
-const HomeArticle = () => {
+const HomeArticle = ({ data }) => {
   const router = useRouter();
 
   const [bookmarked, setBookmarked] = useState(false);
@@ -18,10 +18,10 @@ const HomeArticle = () => {
   };
 
   return (
-    <View className="mx-auto flex flex-row items-center mt-4 border bg-secondary rounded-xl w-full h-48">
-      <View className="w-1/2 h-3/4 flex  justify-center items-center">
+    <View className="mx-auto flex flex-row items-center mt-4 border bg-secondary rounded-xl w-11/12 h-44">
+      <View className="w-1/2 h-3/4 flex  justify-center ">
         <Image
-          className="w-48 h-44 ml-2 rounded-xl "
+          className="w-40 h-40 ml-2  rounded-xl "
           source={images.esportPlace}
         ></Image>
       </View>

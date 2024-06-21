@@ -19,6 +19,7 @@ import controller from "../assets/icons/icons8-manette-50.png";
 import gaming from "../assets/icons/gaming.png";
 import check from "../assets/icons/check.png";
 import circle from "../assets/icons/circle.png";
+import engrenage from "../assets/icons/engrenage.png";
 
 export default {
   play,
@@ -41,4 +42,6 @@ export default {
   controller,
   gaming,
   check,
+  circle,
+  engrenage,
 };
