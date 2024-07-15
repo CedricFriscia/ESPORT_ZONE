@@ -20,6 +20,7 @@ import gaming from "../assets/icons/gaming.png";
 import check from "../assets/icons/check.png";
 import circle from "../assets/icons/circle.png";
 import engrenage from "../assets/icons/engrenage.png";
+import view from "../assets/icons/icons8-visible-64.png";
 
 export default {
   play,
@@ -44,4 +45,5 @@ export default {
   check,
   circle,
   engrenage,
+  view,
 };

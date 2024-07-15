@@ -15,9 +15,7 @@ const Bookmark = () => {
         <View className="mx-auto">
           <SearchBar />
         </View>
-        <View className="flex m-auto items-center justify-center w-11/12 mb-4">
-          <HomeArticle />
-        </View>
+        <View className="flex m-auto items-center justify-center w-11/12 mb-4"></View>
       </ScrollView>
     </SafeAreaView>
   );

@@ -46,23 +46,6 @@ const Profile = () => {
             <Image className="w-8 h-8" source={icons.engrenage} />
           </TouchableOpacity>
         </View>
-
-        <View className="flex items-center mb-4">
-          <Text className="text-secondary-100 text-4xl">CrazyMoon</Text>
-        </View>
-        <View className="flex m-auto items-center justify-center w-11/12 mb-4">
-          <View className="flex flex-row items-center">
-            <Image className="w-8 h-8 mr-2" source={icons.fire}></Image>
-            <Text className="text-white text-xl">Last Article</Text>
-          </View>
-          <HomeArticle />
-        </View>
-        <Text className="text-xl text-white mx-auto">BADGES</Text>
-        <View className="w-11/12 border-2 border-white mt-2 mx-auto rounded flex-row justify-center">
-          <Image className="w-24 h-24 m-1" source={badges.wolf} />
-          <Image className="w-24 h-24 m-1" source={badges.pheonix} />
-          <Image className="w-24 h-24 m-1" source={badges.wolf} />
-        </View>
       </ScrollView>
     </SafeAreaView>
   );

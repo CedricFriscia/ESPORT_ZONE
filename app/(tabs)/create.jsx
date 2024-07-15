@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Link, useRouter } from "expo-router";
 import {
   Pressable,
   SafeAreaView,
-  StyleSheet,
   Text,
   ScrollView,
   View,
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
-  Image,
+  TextInput,
 } from "react-native";
 import {
   actions,
@@ -17,19 +17,20 @@ import {
   RichToolbar,
 } from "react-native-pell-rich-editor";
 import axios from "axios";
-import { icons } from "../../constants";
-import { image } from "../../constants";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Create = () => {
   const [token, setToken] = useState(null);
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
   const richText = useRef();
+  const router = useRouter();
 
   const [descHTML, setDescHTML] = useState("");
   const [showDescError, setShowDescError] = useState(false);
 
-  const [title, setTitle] = useState("test");
+  const [title, setTitle] = useState("");
 
   useEffect(() => {
     const getToken = async () => {
@@ -50,6 +51,10 @@ const Create = () => {
     }
   };
 
+  const onChangeTitle = (title) => {
+    setTitle(title);
+  };
+
   const submitContentHandle = async () => {
     try {
       const formData = new FormData();
@@ -64,10 +69,9 @@ const Create = () => {
         withCredentials: true,
       });
       if (response.status === 200) {
-        alert("Article submitted successfully");
+        router.push("/home");
       }
     } catch (error) {
-      r;
       console.error(
         "Error submitting article:",
         error.response || error.message
@@ -95,6 +99,15 @@ const Create = () => {
             </View>
 
             <View>
+              <TextInput
+                editable
+                className="bg-white mb-4 w-10/12 mx-auto rounded"
+                placeholder="Title"
+                multiline
+                value={title}
+                onChangeText={(title) => onChangeTitle(title)}
+                style={{ padding: 10 }}
+              />
               <RichToolbar
                 editor={richText}
                 selectedIconTint="#873c1e"
