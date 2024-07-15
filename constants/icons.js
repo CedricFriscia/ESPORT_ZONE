@@ -21,6 +21,8 @@ import check from "../assets/icons/check.png";
 import circle from "../assets/icons/circle.png";
 import engrenage from "../assets/icons/engrenage.png";
 import view from "../assets/icons/icons8-visible-64.png";
+import pen from "../assets/icons/pen.png";
+import read from "../assets/icons/read.png";
 
 export default {
   play,
@@ -41,9 +43,11 @@ export default {
   bookmarkRed,
   fire,
   controller,
+  read,
   gaming,
   check,
   circle,
   engrenage,
+  pen,
   view,
 };
