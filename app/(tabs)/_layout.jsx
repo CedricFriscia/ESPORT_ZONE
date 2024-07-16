@@ -2,6 +2,7 @@ import { View, Text, Image } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import { icons } from "../../constants";
+import { LinearGradient } from "expo-linear-gradient";
 
 const TabIcon = ({ icon, color, name, focused }) => {
   return (
@@ -32,8 +33,9 @@ const TabsLayout = () => {
         tabBarStyle: {
           backgroundColor: "#161622",
           borderTopWidth: 1,
-          borderTopColor: "#232533",
+          borderTopColor: "#161622",
           height: 84,
+          paddingTop: 10,
         },
       }}
     >

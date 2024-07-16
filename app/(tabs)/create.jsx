@@ -17,6 +17,7 @@ import {
   RichToolbar,
 } from "react-native-pell-rich-editor";
 import axios from "axios";
+import { LinearGradient } from "expo-linear-gradient";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -81,66 +82,73 @@ const Create = () => {
   };
 
   return (
-    <SafeAreaView className="bg-primary flex-1">
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <ScrollView>
-          <Pressable onPress={() => richText.current?.dismissKeyboard()}>
-            <View className="relative border-b border-white pb-4 mb-4 flex items-center">
-              <Text className="text-indigo-400 text-4xl font-bold">
-                <Text className="text-secondary">E</Text>Z
-              </Text>
-            </View>
-            <View className="mb-2">
-              <Text className="text-white text-2xl uppercase mx-auto">
-                Create article
-              </Text>
-            </View>
+    <LinearGradient
+      colors={["#484bf3", "#161622"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
+      style={{ flex: 1 }}
+    >
+      <SafeAreaView className="flex-1">
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <ScrollView>
+            <Pressable onPress={() => richText.current?.dismissKeyboard()}>
+              <View className="relative border-b border-white pb-4 mb-4 flex items-center">
+                <Text className="text-indigo-400 text-4xl font-bold">
+                  <Text className="text-secondary">E</Text>Z
+                </Text>
+              </View>
+              <View className="mb-2">
+                <Text className="text-white text-2xl uppercase mx-auto">
+                  Create article
+                </Text>
+              </View>
 
-            <View>
-              <TextInput
-                editable
-                className="bg-white mb-4 w-10/12 mx-auto rounded"
-                placeholder="Title"
-                multiline
-                value={title}
-                onChangeText={(title) => onChangeTitle(title)}
-                style={{ padding: 10 }}
-              />
-              <RichToolbar
-                editor={richText}
-                selectedIconTint="#873c1e"
-                iconTint="#312921"
-                actions={[
-                  actions.insertImage,
-                  actions.setBold,
-                  actions.setItalic,
-                  actions.insertBulletsList,
-                  actions.insertOrderedList,
-                  actions.insertLink,
-                  actions.setStrikethrough,
-                  actions.setUnderline,
-                ]}
-              />
-              <RichEditor
-                ref={richText}
-                onChange={richTextHandle}
-                placeholder="Write your cool content here :)"
-                androidHardwareAccelerationDisabled={true}
-                initialHeight={250}
-              />
-              <TouchableOpacity
-                className=" bg-blue-300 flex items-center m-2 p-2 rounded-lg mx-auto w-[25vw] "
-                onPress={submitContentHandle}
-              >
-                <Text className="text-black text-2xl ">Create</Text>
-              </TouchableOpacity>
-            </View>
-          </Pressable>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+              <View>
+                <TextInput
+                  editable
+                  className="bg-white mb-4 w-10/12 mx-auto rounded"
+                  placeholder="Title"
+                  multiline
+                  value={title}
+                  onChangeText={(title) => onChangeTitle(title)}
+                  style={{ padding: 10 }}
+                />
+                <RichToolbar
+                  editor={richText}
+                  selectedIconTint="#873c1e"
+                  iconTint="#312921"
+                  actions={[
+                    actions.insertImage,
+                    actions.setBold,
+                    actions.setItalic,
+                    actions.insertBulletsList,
+                    actions.insertOrderedList,
+                    actions.insertLink,
+                    actions.setStrikethrough,
+                    actions.setUnderline,
+                  ]}
+                />
+                <RichEditor
+                  ref={richText}
+                  onChange={richTextHandle}
+                  placeholder="Write your cool content here :)"
+                  androidHardwareAccelerationDisabled={true}
+                  initialHeight={250}
+                />
+                <TouchableOpacity
+                  className=" bg-blue-300 flex items-center m-2 p-2 rounded-lg mx-auto w-[25vw] "
+                  onPress={submitContentHandle}
+                >
+                  <Text className="text-black text-2xl ">Create</Text>
+                </TouchableOpacity>
+              </View>
+            </Pressable>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 };
 
