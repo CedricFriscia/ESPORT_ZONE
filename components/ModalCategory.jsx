@@ -1,0 +1,47 @@
+// CustomModal.js
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, Modal, FlatList } from "react-native";
+import CustomBadgeCategory from "../components/CustomBadgeCategory";
+import { getAllCategories } from "../lib/useApi";
+
+const ModalCategory = ({
+  visible,
+  onClose,
+  handleLogoutModalVisible,
+  logoutModalVisible,
+}) => {
+  const [categories, setCategories] = useState(null);
+
+  useEffect(() => {
+    const fetchAllDatas = async () => {
+      try {
+        const categoriesData = await getAllCategories();
+        setCategories(categoriesData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchAllDatas();
+  }, []);
+
+  return (
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={visible}
+      onRequestClose={onClose}
+    >
+      <FlatList
+        data={categories}
+        className="bg-white w-[85%] mx-auto"
+        renderItem={({ item: category }) => (
+          <CustomBadgeCategory name={category.name} icon={category.icon} />
+        )}
+        keyExtractor={(category) => category.id.toString()}
+      />
+    </Modal>
+  );
+};
+
+export default ModalCategory;

@@ -1,24 +1,37 @@
+import React, { useEffect, useState, useCallback } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   FlatList,
   ScrollView,
+  TextInput,
   RefreshControl,
 } from "react-native";
-import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import HomeArticle from "../../components/HomeArticle";
-import { getArticle } from "../../lib/useApi";
 import { LinearGradient } from "expo-linear-gradient";
+import SearchBar from "../../components/SearchBar";
+import HomeArticle from "../../components/HomeArticle";
+import CustomBadge from "../../components/CustomBadge";
+import ModalCategory from "../../components/ModalCategory";
+import { getArticle, getArticleByName } from "../../lib/useApi";
 
 const Home = () => {
-  const [forYou, setForYou] = useState(true);
-  const [subscribe, setSubscribe] = useState(false);
+  const [settingsCategoriesVisible, setSettingsCategoriesVisible] =
+    useState(false);
   const [articles, setArticles] = useState([]);
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [search, setSearch] = useState("");
 
-  const onRefresh = React.useCallback(() => {
+  const handleModalVisible = () => {
+    setSettingsCategoriesVisible(true);
+  };
+
+  const closeModals = () => {
+    setSettingsCategoriesVisible(false);
+  };
+
+  const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
@@ -35,19 +48,24 @@ const Home = () => {
       }
     };
 
-    fetchData();
-  }, [refreshing]);
+    const fetchDataByName = async (search) => {
+      try {
+        const articles = await getArticleByName(search);
+        setArticles(articles);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  console.log(articles);
+    if (search) {
+      fetchDataByName(search);
+    } else {
+      fetchData();
+    }
+  }, [refreshing, search]);
 
-  const forYouPress = () => {
-    setSubscribe(false);
-    setForYou(true);
-  };
-
-  const subscribePress = () => {
-    setSubscribe(true);
-    setForYou(false);
+  const handleSearch = (text) => {
+    setSearch(text);
   };
 
   return (
@@ -57,41 +75,29 @@ const Home = () => {
       end={{ x: 0, y: 1 }}
       style={{ flex: 1 }}
     >
-      <SafeAreaView className=" w-full h-screen p-4">
-        <View className="flex items-center border-b border-white">
-          <Text className="text-4xl text-white font-bold text-center mb-4">
-            <Text className="text-indigo-400">
-              <Text className="text-secondary">E</Text>Z
-            </Text>
+      <ModalCategory
+        visible={settingsCategoriesVisible}
+        onClose={closeModals}
+      />
+      <SafeAreaView className="h-screen">
+        <View className="relative border-b border-white pb-4 mb-4 flex items-center">
+          <Text className="text-indigo-400 text-4xl font-bold">
+            <Text className="text-secondary">E</Text>Z
           </Text>
+        </View>
+        <View className="mb-2">
+          <SearchBar handleSearch={handleSearch} />
+          <View className="flex flex-row items-center justify-between px-2 my-4">
+            <Text className="text-white text-2xl ">Catégorie</Text>
+            <TouchableOpacity onPress={handleModalVisible}>
+              <Text className="text-white text-lg ">see all</Text>
+            </TouchableOpacity>
+          </View>
 
-          <View className="flex flex-row mb-2 w-screen justify-around">
-            <TouchableOpacity
-              onPress={forYouPress}
-              accessibilityLabel="Learn more about this purple button"
-              className={forYou ? "border-b-4 border-secondary" : ""}
-            >
-              <Text
-                className={
-                  forYou ? "text-secondary text-lg" : "text-white text-lg"
-                }
-              >
-                Pour toi
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={subscribePress}
-              accessibilityLabel="Learn more about this purple button"
-              className={subscribe ? "border-b-4 border-secondary" : ""}
-            >
-              <Text
-                className={
-                  subscribe ? "text-secondary text-lg" : "text-white text-lg"
-                }
-              >
-                Abonnements
-              </Text>
-            </TouchableOpacity>
+          <View className="flex flex-row justify-around">
+            <CustomBadge name={"esport"} icon={"search"} />
+            <CustomBadge name={"Jeux"} icon={"play"} />
+            <CustomBadge name={"équipe"} icon={"controller"} />
           </View>
         </View>
         <ScrollView
@@ -106,6 +112,7 @@ const Home = () => {
         >
           <FlatList
             data={articles}
+            className="pb-16"
             renderItem={({ item: article }) => (
               <HomeArticle
                 name={article.name}
@@ -114,7 +121,6 @@ const Home = () => {
               />
             )}
             keyExtractor={(article) => article.id.toString()}
-            contentContainerStyle={{ flexGrow: 1 }}
           />
         </ScrollView>
       </SafeAreaView>

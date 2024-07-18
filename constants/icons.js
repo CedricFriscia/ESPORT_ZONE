@@ -23,6 +23,7 @@ import engrenage from "../assets/icons/engrenage.png";
 import view from "../assets/icons/icons8-visible-64.png";
 import pen from "../assets/icons/pen.png";
 import read from "../assets/icons/read.png";
+import more from "../assets/icons/icons8-plus-64.png";
 
 export default {
   play,
@@ -38,6 +39,7 @@ export default {
   logout,
   eyeHide,
   eye,
+  more,
   google,
   bookmarkBlack,
   bookmarkRed,

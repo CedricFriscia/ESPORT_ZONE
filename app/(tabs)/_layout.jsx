@@ -2,7 +2,6 @@ import { View, Text, Image } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import { icons } from "../../constants";
-import { LinearGradient } from "expo-linear-gradient";
 
 const TabIcon = ({ icon, color, name, focused }) => {
   return (
