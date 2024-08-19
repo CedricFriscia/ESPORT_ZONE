@@ -13,7 +13,7 @@ const ModalCategory = ({
   const [categories, setCategories] = useState(null);
 
   useEffect(() => {
-    const fetchAllDatas = async () => {
+    const fetchAllCategories = async () => {
       try {
         const categoriesData = await getAllCategories();
         setCategories(categoriesData);
@@ -22,7 +22,7 @@ const ModalCategory = ({
       }
     };
 
-    fetchAllDatas();
+    fetchAllCategories();
   }, []);
 
   return (
@@ -34,9 +34,10 @@ const ModalCategory = ({
     >
       <FlatList
         data={categories}
-        className="bg-white w-[85%] mx-auto"
+        className="bg-white w-[85%] h-[40%] mx-auto"
         renderItem={({ item: category }) => (
-          <CustomBadgeCategory name={category.name} icon={category.icon} />
+          // <CustomBadgeCategory name={category.name} icon={category.icon} />
+          <Text>test</Text>
         )}
         keyExtractor={(category) => category.id.toString()}
       />

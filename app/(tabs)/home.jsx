@@ -4,15 +4,12 @@ import {
   Text,
   TouchableOpacity,
   FlatList,
-  ScrollView,
-  TextInput,
   RefreshControl,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import SearchBar from "../../components/SearchBar";
 import HomeArticle from "../../components/HomeArticle";
-import CustomBadge from "../../components/CustomBadge";
 import ModalCategory from "../../components/ModalCategory";
 import { getArticle, getArticleByName } from "../../lib/useApi";
 
@@ -79,7 +76,7 @@ const Home = () => {
         visible={settingsCategoriesVisible}
         onClose={closeModals}
       />
-      <SafeAreaView className="h-screen">
+      <SafeAreaView style={{ flex: 1 }}>
         <View className="relative border-b border-white pb-4 mb-4 flex items-center">
           <Text className="text-indigo-400 text-4xl font-bold">
             <Text className="text-secondary">E</Text>Z
@@ -87,20 +84,14 @@ const Home = () => {
         </View>
         <View className="mb-2">
           <SearchBar handleSearch={handleSearch} />
-          <View className="flex flex-row items-center justify-between px-2 my-4">
+          <View className="flex flex-row items-center justify-between px-2 mt-6">
             <Text className="text-white text-2xl ">Catégorie</Text>
             <TouchableOpacity onPress={handleModalVisible}>
               <Text className="text-white text-lg ">see all</Text>
             </TouchableOpacity>
           </View>
-
-          <View className="flex flex-row justify-around">
-            <CustomBadge name={"esport"} icon={"search"} />
-            <CustomBadge name={"Jeux"} icon={"play"} />
-            <CustomBadge name={"équipe"} icon={"controller"} />
-          </View>
         </View>
-        <ScrollView
+        <FlatList
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
@@ -109,20 +100,17 @@ const Home = () => {
               tintColor="#FFF"
             />
           }
-        >
-          <FlatList
-            data={articles}
-            className="pb-16"
-            renderItem={({ item: article }) => (
-              <HomeArticle
-                name={article.name}
-                id={article.id}
-                created={article.created_at}
-              />
-            )}
-            keyExtractor={(article) => article.id.toString()}
-          />
-        </ScrollView>
+          data={articles}
+          style={{ flex: 1 }}
+          renderItem={({ item: article }) => (
+            <HomeArticle
+              name={article.name}
+              id={article.id}
+              created={article.created_at}
+            />
+          )}
+          keyExtractor={(article) => article.id.toString()}
+        />
       </SafeAreaView>
     </LinearGradient>
   );
