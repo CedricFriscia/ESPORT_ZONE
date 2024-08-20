@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link, useRouter } from "expo-router";
+import { getUserProfile } from "../../lib/useApi";
 
 import { icons, images } from "../../constants";
 
@@ -17,6 +18,9 @@ import CustomModal from "../../components/CustomModal";
 const Profile = () => {
   const [settingsModalVisible, setSettingsModalVisible] = useState(false);
   const [logoutModalVisible, setLogoutModalVisible] = useState(false);
+  const [user, setUser] = useState();
+
+  console.log(user);
   const router = useRouter();
 
   const handleLogoutModalVisible = () => {
@@ -31,6 +35,18 @@ const Profile = () => {
   const handlePress = async () => {
     router.push("/create");
   };
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const userData = await getUserProfile();
+        setUser(userData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchUserProfile();
+  }, []);
 
   return (
     <LinearGradient
@@ -66,7 +82,9 @@ const Profile = () => {
               />
               <View className="flex gap-2 pt-4 items-center">
                 <Text className="text-slate-300">Ravi de vous voir !</Text>
-                <Text className="text-slate-300 text-6xl">Tazem</Text>
+                <Text className="text-slate-300 text-6xl">
+                  {user != null ? user.name : "..."}
+                </Text>
                 <View className="flex flex-row justify-center items-center gap-2">
                   <Text className="text-2xl text-white">"</Text>
                   <Text className="text-white">Roi des geek !</Text>
