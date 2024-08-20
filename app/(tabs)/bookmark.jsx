@@ -36,6 +36,8 @@ const Bookmark = () => {
     }, 2000);
   }, []);
 
+  const handleSearch = () => {};
+
   return (
     <LinearGradient
       colors={["#484bf3", "#161622"]}
@@ -43,43 +45,37 @@ const Bookmark = () => {
       end={{ x: 0, y: 1 }}
       style={{ flex: 1 }}
     >
-      <SafeAreaView className=" w-screen h-full p-4">
-        <View className="pb-24">
-          <View className="border-b border-white pb-4 mb-4">
-            <Text className="text-indigo-400 text-4xl font-bold text-center">
-              <Text className="text-secondary">E</Text>Z
-            </Text>
-          </View>
-          <View className="mx-auto">
-            <SearchBar />
-          </View>
-          <ScrollView
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={onRefresh}
-                colors={["#FFF", "#FFF", "#FFF"]}
-                tintColor="#FFF"
-              />
-            }
-          >
-            <FlatList
-              data={bookmarks}
-              className="pb-16"
-              renderItem={({ item: bookmark }) => (
-                <HomeArticle
-                  name={bookmark.name}
-                  id={bookmark.id}
-                  created={bookmark.created_at}
-                />
-              )}
-              keyExtractor={(article) => article.id.toString()}
-            />
-          </ScrollView>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View className="relative border-b border-white pb-4 mb-4 flex items-center">
+          <Text className="text-indigo-400 text-4xl font-bold">
+            <Text className="text-secondary">E</Text>Z
+          </Text>
         </View>
+        <View className="mb-2">
+          <SearchBar handleSearch={handleSearch} />
+        </View>
+        <FlatList
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={["#FFF", "#FFF", "#FFF"]}
+              tintColor="#FFF"
+            />
+          }
+          data={bookmarks}
+          style={{ flex: 1 }}
+          renderItem={({ item: bookmark }) => (
+            <HomeArticle
+              name={bookmark.name}
+              id={bookmark.id}
+              created={bookmark.created_at}
+            />
+          )}
+          keyExtractor={(bookmark) => bookmark.id.toString()}
+        />
       </SafeAreaView>
     </LinearGradient>
   );
 };
-
 export default Bookmark;
