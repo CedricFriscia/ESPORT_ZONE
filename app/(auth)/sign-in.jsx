@@ -54,7 +54,7 @@ const SignIn = () => {
           </Text>
           <Text className="text-white text-5xl text-center mb-4">Account</Text>
           <Text className="text-white text-center mb-6">
-            Enter your email and password to log in
+            Enter your username and password to log in
           </Text>
 
           <View className="w-11/12 bg-white flex justify-center border-2 border-indigo-400 items-center p-8 rounded-xl">
@@ -63,7 +63,7 @@ const SignIn = () => {
               <Text className="text-sm mt-6">or</Text>
             </View>
             <FormField
-              placeholder="Charly@email.com"
+              placeholder="Username"
               value={form.email}
               handleChangeText={(e) => setForm({ ...form, email: e })}
             />
