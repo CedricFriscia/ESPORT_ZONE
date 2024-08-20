@@ -33,7 +33,7 @@ const HomeArticle = ({ id, name, created }) => {
   };
 
   return (
-    <View className="mx-auto flex p-1 mt-4 border bg-white rounded-xl w-11/12 h-96">
+    <View className="mx-auto flex p-1 mt-4 border bg-white rounded-xl w-11/12 h-80">
       <Image
         source={images.esportPlayer}
         className="h-1/2 bg-black w-full rounded-xl border-2 border-black"
@@ -60,15 +60,14 @@ const HomeArticle = ({ id, name, created }) => {
           <MenuItem onPress={hideMenu}>Unbookmark</MenuItem>
         </Menu>
       </View>
-      <Text className="text-black text-lg ml-2">{formattedDate}</Text>
+
       <View className="flex flex-row justify-between">
         <View className="flex flex-row m-2 items-center">
-          <Text className="text-lg mr-1 text-secondary">Par</Text>
-          <Text className="text-xl">Tazem</Text>
+          <Text className="text-black text-lg ">{formattedDate}</Text>
         </View>
         <View className="flex flex-row m-2 items-center">
-          <Text className="text-lg mr-1">350</Text>
-          <Image className="w-6 h-6 " source={icons.view} />
+          <Text className="text-lg mr-1 text-secondary">By</Text>
+          <Text className="text-xl">Tazem</Text>
         </View>
       </View>
       <View className="">
@@ -76,7 +75,7 @@ const HomeArticle = ({ id, name, created }) => {
           className="bg-indigo-400 rounded-xl flex items-center mt-3"
           onPress={handleReadMore}
         >
-          <Text className="text-2xl p-2">Read more...</Text>
+          <Text className="text-2xl p-2">Read article...</Text>
         </TouchableOpacity>
       </View>
     </View>

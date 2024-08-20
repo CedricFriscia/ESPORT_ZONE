@@ -62,14 +62,18 @@ const Create = () => {
       formData.append("name", title);
       formData.append("content", descHTML);
 
-      const response = await axios.post(`${apiUrl}/article/create`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-        withCredentials: true,
-      });
-      if (response.status === 200) {
+      const response = await axios.post(
+        `${apiUrl}/api/create/article`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        }
+      );
+      if (response.status === 201) {
         router.push("/home");
       }
     } catch (error) {
