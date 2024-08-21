@@ -5,7 +5,7 @@ import { icons, images } from "../constants";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Menu, MenuItem, MenuDivider } from "react-native-material-menu";
-import { bookmarkArticle } from "../lib/useApi";
+import { bookmarkArticle, unBookmarkArticle } from "../lib/useApi";
 
 const HomeArticle = ({ id, name, created }) => {
   const router = useRouter();
@@ -20,6 +20,16 @@ const HomeArticle = ({ id, name, created }) => {
   const handleBookmark = async () => {
     try {
       await bookmarkArticle(id);
+      hideMenu();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUnBookmark = async () => {
+    try {
+      await unBookmarkArticle(id);
+      hideMenu();
     } catch (error) {
       console.log(error);
     }
@@ -57,7 +67,7 @@ const HomeArticle = ({ id, name, created }) => {
         >
           <MenuItem onPress={handleBookmark}>Bookmark</MenuItem>
           <MenuDivider />
-          <MenuItem onPress={hideMenu}>Unbookmark</MenuItem>
+          <MenuItem onPress={handleUnBookmark}>Unbookmark</MenuItem>
           <MenuDivider />
           <MenuItem className="bg-red-400" onPress={hideMenu}>
             Delete

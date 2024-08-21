@@ -150,6 +150,33 @@ export const bookmarkArticle = async (id) => {
   }
 };
 
+export const unBookmarkArticle = async (id) => {
+  try {
+    const storageToken = await AsyncStorage.getItem("access_token");
+
+    const response = await axios.post(
+      `${apiUrl}/api/articles/unbookmark`,
+      {
+        articleId: id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${storageToken}`,
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error("Failed to fetch data");
+    }
+  } catch (error) {
+    console.error("Error bookmarking article:", error.message);
+    throw new Error(error.message);
+  }
+};
+
 export const isBookmarked = async (id) => {
   try {
     const storageToken = await AsyncStorage.getItem("access_token");
