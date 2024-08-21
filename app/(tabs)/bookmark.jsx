@@ -27,7 +27,7 @@ const Bookmark = () => {
     };
 
     fetchBookmarks();
-  }, []);
+  }, [refreshing]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);

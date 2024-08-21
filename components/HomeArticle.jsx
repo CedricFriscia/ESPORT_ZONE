@@ -58,6 +58,10 @@ const HomeArticle = ({ id, name, created }) => {
           <MenuItem onPress={handleBookmark}>Bookmark</MenuItem>
           <MenuDivider />
           <MenuItem onPress={hideMenu}>Unbookmark</MenuItem>
+          <MenuDivider />
+          <MenuItem className="bg-red-400" onPress={hideMenu}>
+            Delete
+          </MenuItem>
         </Menu>
       </View>
 

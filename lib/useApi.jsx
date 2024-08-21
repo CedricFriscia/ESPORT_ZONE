@@ -127,14 +127,17 @@ export const bookmarkArticle = async (id) => {
   try {
     const storageToken = await AsyncStorage.getItem("access_token");
 
-    const response = await axios.get(`${apiUrl}/api/articles/bookmarks`, {
-      headers: {
-        Authorization: `Bearer ${storageToken}`,
-      },
-      params: {
+    const response = await axios.post(
+      `${apiUrl}/api/articles/bookmark`,
+      {
         articleId: id,
       },
-    });
+      {
+        headers: {
+          Authorization: `Bearer ${storageToken}`,
+        },
+      }
+    );
 
     if (response.status === 200) {
       return response.data;

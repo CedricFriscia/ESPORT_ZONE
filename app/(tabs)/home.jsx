@@ -85,12 +85,12 @@ const Home = () => {
         </View>
         <View className="mb-2">
           <SearchBar handleSearch={handleSearch} />
-          <View className="flex flex-row items-center justify-between px-2 mt-6">
+          {/* <View className="flex flex-row items-center justify-between px-2 mt-6">
             <Text className="text-white text-2xl ">Catégorie</Text>
             <TouchableOpacity onPress={handleModalVisible}>
               <Text className="text-white text-lg ">see all</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
         <FlatList
           refreshControl={
