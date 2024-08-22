@@ -9,6 +9,7 @@ import {
   bookmarkArticle,
   unBookmarkArticle,
   isBookmarked,
+  shareArticle,
 } from "../lib/useApi";
 
 const HomeArticle = ({ id, name, created }) => {
@@ -34,6 +35,10 @@ const HomeArticle = ({ id, name, created }) => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const onShare = async () => {
+    await shareArticle(id);
   };
 
   const formattedDate = format(created, "d MMMM yyyy", { locale: fr });
@@ -92,7 +97,7 @@ const HomeArticle = ({ id, name, created }) => {
             <MenuItem onPress={handleBookmark}>Bookmark</MenuItem>
           )}
           <MenuDivider />
-          <MenuItem onPress={hideMenu}>Share</MenuItem>
+          <MenuItem onPress={onShare}>Share</MenuItem>
           <MenuDivider />
           <MenuItem className="bg-red-400" onPress={hideMenu}>
             Delete

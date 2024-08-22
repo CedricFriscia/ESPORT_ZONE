@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import * as Sharing from "expo-sharing";
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -174,6 +175,26 @@ export const unBookmarkArticle = async (id) => {
   } catch (error) {
     console.error("Error bookmarking article:", error.message);
     throw new Error(error.message);
+  }
+};
+
+export const shareArticle = async (id) => {
+  try {
+    const isSharingAvailable = await Sharing.isAvailableAsync();
+
+    if (isSharingAvailable) {
+      const result = await Sharing.shareAsync(`${apiUrl}/article/shared`);
+
+      if (result.action === Sharing.sharedAction) {
+        console.log("Partagé avec succès !");
+      } else if (result.action === Sharing.dismissedAction) {
+        console.log("Partage annulé.");
+      }
+    } else {
+      console.log("Le partage n'est pas disponible sur cet appareil.");
+    }
+  } catch (error) {
+    console.error("Erreur lors du partage", error);
   }
 };
 
