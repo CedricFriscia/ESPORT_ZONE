@@ -5,15 +5,36 @@ import { icons, images } from "../constants";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Menu, MenuItem, MenuDivider } from "react-native-material-menu";
-import { bookmarkArticle, unBookmarkArticle } from "../lib/useApi";
+import {
+  bookmarkArticle,
+  unBookmarkArticle,
+  isBookmarked,
+} from "../lib/useApi";
 
 const HomeArticle = ({ id, name, created }) => {
   const router = useRouter();
 
   const [visible, setVisible] = useState(false);
+  const [isBookmark, setIsBookmark] = useState(false);
 
   const hideMenu = () => setVisible(false);
-  const showMenu = () => setVisible(true);
+  const showMenu = async () => {
+    try {
+      const response = await isBookmarked(id);
+
+      console.log(response);
+
+      if (response.isBookmarked === true) {
+        setIsBookmark(true);
+        setVisible(true);
+      } else {
+        setIsBookmark(false);
+        setVisible(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const formattedDate = format(created, "d MMMM yyyy", { locale: fr });
 
@@ -35,7 +56,7 @@ const HomeArticle = ({ id, name, created }) => {
     }
   };
 
-  const handleReadMore = () => {
+  const handleRead = () => {
     router.push({
       pathname: "/article",
       params: { id },
@@ -65,9 +86,13 @@ const HomeArticle = ({ id, name, created }) => {
           }
           onRequestClose={hideMenu}
         >
-          <MenuItem onPress={handleBookmark}>Bookmark</MenuItem>
+          {isBookmark ? (
+            <MenuItem onPress={handleUnBookmark}>Unbookmark</MenuItem>
+          ) : (
+            <MenuItem onPress={handleBookmark}>Bookmark</MenuItem>
+          )}
           <MenuDivider />
-          <MenuItem onPress={handleUnBookmark}>Unbookmark</MenuItem>
+          <MenuItem onPress={hideMenu}>Share</MenuItem>
           <MenuDivider />
           <MenuItem className="bg-red-400" onPress={hideMenu}>
             Delete
@@ -87,7 +112,7 @@ const HomeArticle = ({ id, name, created }) => {
       <View className="">
         <TouchableOpacity
           className="bg-indigo-400 rounded-xl flex items-center mt-3"
-          onPress={handleReadMore}
+          onPress={handleRead}
         >
           <Text className="text-2xl p-2">Read article...</Text>
         </TouchableOpacity>
