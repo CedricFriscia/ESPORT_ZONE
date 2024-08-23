@@ -6,7 +6,7 @@ import {
   FlatList,
   RefreshControl,
 } from "react-native";
-import HomeArticle from "../../components/HomeArticle";
+import ArticleCard from "../../components/ArticleCard";
 import React, { useEffect, useState, useCallback } from "react";
 import SearchBar from "../../components/SearchBar";
 import { LinearGradient } from "expo-linear-gradient";
@@ -66,7 +66,7 @@ const Bookmark = () => {
           data={bookmarks}
           style={{ flex: 1 }}
           renderItem={({ item: bookmark }) => (
-            <HomeArticle
+            <ArticleCard
               name={bookmark.name}
               id={bookmark.id}
               created={bookmark.created_at}

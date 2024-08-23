@@ -10,7 +10,7 @@ import {
 
 import { LinearGradient } from "expo-linear-gradient";
 import SearchBar from "../../components/SearchBar";
-import HomeArticle from "../../components/HomeArticle";
+import ArticleCard from "../../components/ArticleCard";
 import ModalCategory from "../../components/ModalCategory";
 import { getArticle, getArticleByName } from "../../lib/useApi";
 
@@ -104,10 +104,11 @@ const Home = () => {
           data={articles}
           style={{ flex: 1 }}
           renderItem={({ item: article }) => (
-            <HomeArticle
+            <ArticleCard
               name={article.name}
               id={article.id}
               created={article.created_at}
+              writer={article.user_id}
             />
           )}
           keyExtractor={(article) => article.id.toString()}

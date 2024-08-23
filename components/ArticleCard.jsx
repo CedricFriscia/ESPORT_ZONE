@@ -10,13 +10,16 @@ import {
   unBookmarkArticle,
   isBookmarked,
   shareArticle,
+  getUserById,
 } from "../lib/useApi";
+import { useEffect } from "react";
 
-const HomeArticle = ({ id, name, created }) => {
+const ArticleCard = ({ id, name, created, writer }) => {
   const router = useRouter();
 
   const [visible, setVisible] = useState(false);
   const [isBookmark, setIsBookmark] = useState(false);
+  const [owner, setOwner] = useState("");
 
   const hideMenu = () => setVisible(false);
   const showMenu = async () => {
@@ -36,6 +39,22 @@ const HomeArticle = ({ id, name, created }) => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    const fetchOwnerData = async () => {
+      try {
+        const ownerData = await getUserById(writer);
+        if (ownerData && ownerData.length > 0) {
+          setOwner(ownerData[0]);
+        } else {
+          console.log("No user found");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchOwnerData();
+  }, [writer]);
 
   const onShare = async () => {
     await shareArticle(id);
@@ -67,7 +86,7 @@ const HomeArticle = ({ id, name, created }) => {
       params: { id },
     });
   };
-
+  console.log(owner["name"]);
   return (
     <View className="mx-auto flex p-1 mt-4 border bg-white rounded-xl w-11/12 h-80">
       <Image
@@ -111,7 +130,7 @@ const HomeArticle = ({ id, name, created }) => {
         </View>
         <View className="flex flex-row m-2 items-center">
           <Text className="text-lg mr-1 text-secondary">By</Text>
-          <Text className="text-xl">Tazem</Text>
+          <Text className="text-xl">{owner.name}</Text>
         </View>
       </View>
       <View className="">
@@ -126,4 +145,4 @@ const HomeArticle = ({ id, name, created }) => {
   );
 };
 
-export default HomeArticle;
+export default ArticleCard;

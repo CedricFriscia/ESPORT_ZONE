@@ -124,6 +124,28 @@ export const getUserProfile = async () => {
   }
 };
 
+export const getUserById = async (id) => {
+  try {
+    const storageToken = await AsyncStorage.getItem("access_token");
+
+    const response = await axios.get(`${apiUrl}/api/user`, {
+      headers: {
+        Authorization: `Bearer ${storageToken}`,
+      },
+      params: {
+        userId: id,
+      },
+    });
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error("Failed to fetch data");
+    }
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
 export const bookmarkArticle = async (id) => {
   try {
     const storageToken = await AsyncStorage.getItem("access_token");
