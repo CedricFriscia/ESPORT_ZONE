@@ -70,6 +70,7 @@ const Bookmark = () => {
               name={bookmark.name}
               id={bookmark.id}
               created={bookmark.created_at}
+              writer={bookmark.user_id}
             />
           )}
           keyExtractor={(bookmark) => bookmark.id.toString()}
