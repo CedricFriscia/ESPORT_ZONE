@@ -13,6 +13,7 @@ import {
   getUserById,
 } from "../lib/useApi";
 import { useEffect } from "react";
+import ShareModal from "./Modals/ShareModal";
 
 const ArticleCard = ({ id, name, created, writer }) => {
   const router = useRouter();
@@ -26,8 +27,6 @@ const ArticleCard = ({ id, name, created, writer }) => {
     try {
       const response = await isBookmarked(id);
 
-      console.log(response);
-
       if (response.isBookmarked === true) {
         setIsBookmark(true);
         setVisible(true);
@@ -38,6 +37,17 @@ const ArticleCard = ({ id, name, created, writer }) => {
     } catch (error) {
       console.log(error);
     }
+  };
+  const [settingsModalVisible, setSettingsModalVisible] = useState(false);
+  const [logoutModalVisible, setLogoutModalVisible] = useState(false);
+
+  const handleLogoutModalVisible = () => {
+    setLogoutModalVisible(true);
+  };
+
+  const closeModals = () => {
+    setSettingsModalVisible(false);
+    setLogoutModalVisible(false);
   };
 
   useEffect(() => {
@@ -86,9 +96,15 @@ const ArticleCard = ({ id, name, created, writer }) => {
       params: { id },
     });
   };
-  console.log(owner["name"]);
+
   return (
     <View className="mx-auto flex p-1 mt-4 border bg-white rounded-xl w-11/12 h-80">
+      <ShareModal
+        visible={settingsModalVisible || logoutModalVisible}
+        onClose={closeModals}
+        handleLogoutModalVisible={handleLogoutModalVisible}
+        logoutModalVisible={logoutModalVisible}
+      />
       <Image
         source={images.esportPlayer}
         className="h-1/2 bg-black w-full rounded-xl border-2 border-black"
@@ -116,7 +132,7 @@ const ArticleCard = ({ id, name, created, writer }) => {
             <MenuItem onPress={handleBookmark}>Bookmark</MenuItem>
           )}
           <MenuDivider />
-          <MenuItem onPress={onShare}>Share</MenuItem>
+          <MenuItem onPress={handleLogoutModalVisible}>Share</MenuItem>
           <MenuDivider />
           <MenuItem className="bg-red-400" onPress={hideMenu}>
             Delete

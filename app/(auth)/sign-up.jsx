@@ -28,11 +28,7 @@ const SignUp = () => {
         email: form.email,
         password: form.password,
       });
-
-      console.log(response.data);
-
       if (response.status === 200) {
-        console.log("Register successfully");
         route.push("/sign-in");
       }
     } catch (error) {

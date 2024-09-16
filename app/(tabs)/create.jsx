@@ -67,21 +67,24 @@ const Create = () => {
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
           },
           withCredentials: true,
         }
       );
+
       if (response.status === 201) {
+        formData.delete();
         router.push("/home");
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
       }
     } catch (error) {
       console.error(
-        "Error submitting article:",
-        error.response || error.message
+        "Erreur lors de la soumission de l'article:",
+        error.response?.data || error.message
       );
-      alert("Failed to submit article");
     }
   };
 
