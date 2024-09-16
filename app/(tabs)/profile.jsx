@@ -20,7 +20,6 @@ const Profile = () => {
   const [logoutModalVisible, setLogoutModalVisible] = useState(false);
   const [user, setUser] = useState();
 
-  console.log(user);
   const router = useRouter();
 
   const handleLogoutModalVisible = () => {

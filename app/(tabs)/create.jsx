@@ -18,7 +18,6 @@ import {
 } from "react-native-pell-rich-editor";
 import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Create = () => {
@@ -30,7 +29,6 @@ const Create = () => {
 
   const [descHTML, setDescHTML] = useState("");
   const [showDescError, setShowDescError] = useState(false);
-
   const [title, setTitle] = useState("");
 
   useEffect(() => {
@@ -56,6 +54,14 @@ const Create = () => {
     setTitle(title);
   };
 
+  const resetForm = () => {
+    setTitle("");
+    setDescHTML("");
+    if (richText.current) {
+      richText.current.setContentHTML("");
+    }
+  };
+
   const submitContentHandle = async () => {
     try {
       const formData = new FormData();
@@ -74,17 +80,16 @@ const Create = () => {
       );
 
       if (response.status === 201) {
-        formData.delete();
+        resetForm();
         router.push("/home");
-        setTimeout(() => {
-          window.location.reload();
-        }, 100);
       }
     } catch (error) {
       console.error(
         "Erreur lors de la soumission de l'article:",
         error.response?.data || error.message
       );
+      // Optionally, show an error message to the user
+      alert("Erreur lors de la création de l'article. Veuillez réessayer.");
     }
   };
 

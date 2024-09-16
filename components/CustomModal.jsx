@@ -19,8 +19,6 @@ const CustomModal = ({
     try {
       const response = await axios.post(`${apiUrl}/logout`);
 
-      console.log(response.data);
-
       if (response.status === 200) {
         AsyncStorage.removeItem("token");
         console.log("Logout successfully");

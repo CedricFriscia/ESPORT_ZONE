@@ -7,7 +7,7 @@ import {
   RefreshControl,
   SafeAreaView,
 } from "react-native";
-
+import { useFocusEffect } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import SearchBar from "../../components/SearchBar";
 import ArticleCard from "../../components/ArticleCard";
@@ -29,38 +29,47 @@ const Home = () => {
     setSettingsCategoriesVisible(false);
   };
 
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
+  const fetchData = useCallback(async () => {
+    try {
+      const fetchedArticles = await getArticle();
+      setArticles(fetchedArticles);
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const articles = await getArticle();
-        setArticles(articles);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  const fetchDataByName = useCallback(async (searchText) => {
+    try {
+      const fetchedArticles = await getArticleByName(searchText);
+      setArticles(fetchedArticles);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
-    const fetchDataByName = async (search) => {
-      try {
-        const articles = await getArticleByName(search);
-        setArticles(articles);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
     if (search) {
       fetchDataByName(search);
     } else {
       fetchData();
     }
-  }, [refreshing, search]);
+    setRefreshing(false);
+  }, [search, fetchData, fetchDataByName]);
+
+  useFocusEffect(
+    useCallback(() => {
+      onRefresh();
+    }, [onRefresh])
+  );
+
+  useEffect(() => {
+    if (search) {
+      fetchDataByName(search);
+    } else {
+      fetchData();
+    }
+  }, [search, fetchData, fetchDataByName]);
 
   const handleSearch = (text) => {
     setSearch(text);
@@ -85,12 +94,6 @@ const Home = () => {
         </View>
         <View className="mb-2">
           <SearchBar handleSearch={handleSearch} />
-          {/* <View className="flex flex-row items-center justify-between px-2 mt-6">
-            <Text className="text-white text-2xl ">Catégorie</Text>
-            <TouchableOpacity onPress={handleModalVisible}>
-              <Text className="text-white text-lg ">see all</Text>
-            </TouchableOpacity>
-          </View> */}
         </View>
         <FlatList
           refreshControl={
