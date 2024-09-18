@@ -3,10 +3,21 @@ import { StyleSheet, View } from "react-native";
 import React, { useEffect } from "react";
 import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
+import { useNavigation } from "@react-navigation/native";
 
 SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("state", (e) => {
+      console.log("Navigation state changed", e.data.state);
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   const [fontsLoaded, error] = useFonts({
     "Poppins-Black": require("../assets/fonts/Poppins-Black.ttf"),
     "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
@@ -44,6 +55,14 @@ const RootLayout = () => {
       <Stack.Screen
         name="(tabs)"
         options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name="modal"
+        options={{
+          presentation: "modal",
+          animation: "slide_from_bottom",
+          headerShown: false,
+        }}
       />
     </Stack>
   );

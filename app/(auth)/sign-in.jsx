@@ -78,7 +78,7 @@ const SignIn = () => {
               onPress={handleSubmit}
             >
               <Text className="text-xl font-mono font-semibold text-black">
-                BUTTON
+                ENVOYER
               </Text>
             </TouchableOpacity>
             <Text className="mt-4">

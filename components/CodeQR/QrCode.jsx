@@ -1,16 +1,13 @@
+import { View } from "moti";
 import React from "react";
 import QRCode from "react-native-qrcode-svg";
 
-const QrCode = ({ value, getRef }) => {
+const QRCodeComponent = ({ value }) => {
   return (
-    <QRCode
-      value={value}
-      size={250}
-      color="black"
-      backgroundColor="white"
-      getRef={getRef}
-    />
+    <View className="h-screen">
+      <QRCode value={value} size={200} color="black" backgroundColor="white" />
+    </View>
   );
 };
 
-export default QrCode;
+export default QRCodeComponent;

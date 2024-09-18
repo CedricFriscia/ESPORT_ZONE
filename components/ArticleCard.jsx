@@ -1,4 +1,12 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Modal,
+  Pressable,
+} from "react-native";
 import React, { useState } from "react";
 import { useRouter } from "expo-router";
 import { icons, images } from "../constants";
@@ -9,45 +17,30 @@ import {
   bookmarkArticle,
   unBookmarkArticle,
   isBookmarked,
-  shareArticle,
   getUserById,
+  deleteArticle,
 } from "../lib/useApi";
 import { useEffect } from "react";
-import ShareModal from "./Modals/ShareModal";
 
 const ArticleCard = ({ id, name, created, writer }) => {
   const router = useRouter();
-
-  const [visible, setVisible] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(false);
   const [isBookmark, setIsBookmark] = useState(false);
   const [owner, setOwner] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const hideMenu = () => setVisible(false);
+  const hideMenu = () => {
+    setMenuVisible(false);
+  };
+
   const showMenu = async () => {
     try {
       const response = await isBookmarked(id);
-
-      if (response.isBookmarked === true) {
-        setIsBookmark(true);
-        setVisible(true);
-      } else {
-        setIsBookmark(false);
-        setVisible(true);
-      }
+      setIsBookmark(response.isBookmarked);
+      setMenuVisible(true);
     } catch (error) {
-      console.log(error);
+      console.error("Error checking bookmark status:", error);
     }
-  };
-  const [settingsModalVisible, setSettingsModalVisible] = useState(false);
-  const [logoutModalVisible, setLogoutModalVisible] = useState(false);
-
-  const handleLogoutModalVisible = () => {
-    setLogoutModalVisible(true);
-  };
-
-  const closeModals = () => {
-    setSettingsModalVisible(false);
-    setLogoutModalVisible(false);
   };
 
   useEffect(() => {
@@ -60,33 +53,38 @@ const ArticleCard = ({ id, name, created, writer }) => {
           console.log("No user found");
         }
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching owner data:", error);
       }
     };
     fetchOwnerData();
   }, [writer]);
 
-  const onShare = async () => {
-    await shareArticle(id);
-  };
-
-  const formattedDate = format(created, "d MMMM yyyy", { locale: fr });
-
   const handleBookmark = async () => {
     try {
       await bookmarkArticle(id);
+      setIsBookmark(true);
       hideMenu();
     } catch (error) {
-      console.log(error);
+      console.error("Error bookmarking article:", error);
     }
   };
 
   const handleUnBookmark = async () => {
     try {
       await unBookmarkArticle(id);
+      setIsBookmark(false);
       hideMenu();
     } catch (error) {
-      console.log(error);
+      console.error("Error unbookmarking article:", error);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await deleteArticle(id);
+      hideMenu();
+    } catch (error) {
+      console.error("Error deleting article:", error);
     }
   };
 
@@ -97,18 +95,47 @@ const ArticleCard = ({ id, name, created, writer }) => {
     });
   };
 
+  const handleShare = () => {
+    console.log("Sharing article", { id, name });
+    hideMenu();
+    router.push({
+      pathname: "/modal/shareModal",
+      params: { id: id, name: name },
+    });
+  };
+
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
+  const formattedDate = format(created, "d MMMM yyyy", { locale: fr });
+
   return (
     <View className="mx-auto flex p-1 mt-4 border bg-white rounded-xl w-11/12 h-80">
-      <ShareModal
-        visible={settingsModalVisible || logoutModalVisible}
-        onClose={closeModals}
-        handleLogoutModalVisible={handleLogoutModalVisible}
-        logoutModalVisible={logoutModalVisible}
-      />
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View className="flex-1 justify-end">
+          <View className="h-[86%] bg-white rounded-t-3xl p-8 shadow-lg"></View>
+        </View>
+      </Modal>
       <Image
         source={images.esportPlayer}
         className="h-1/2 bg-black w-full rounded-xl border-2 border-black"
       />
+      <TouchableOpacity onPress={openModal}>
+        <Text>Test</Text>
+      </TouchableOpacity>
       <View className="flex flex-row items-center justify-between">
         <Text
           numberOfLines={2}
@@ -118,45 +145,39 @@ const ArticleCard = ({ id, name, created, writer }) => {
           {name}
         </Text>
         <Menu
-          visible={visible}
+          visible={menuVisible}
           anchor={
-            <Text onPress={showMenu} className="flex text-3xl mr-4 mb-3">
-              ...
-            </Text>
+            <TouchableOpacity onPress={showMenu}>
+              <Text className="flex text-3xl mr-4 mb-3">...</Text>
+            </TouchableOpacity>
           }
           onRequestClose={hideMenu}
         >
-          {isBookmark ? (
-            <MenuItem onPress={handleUnBookmark}>Unbookmark</MenuItem>
-          ) : (
-            <MenuItem onPress={handleBookmark}>Bookmark</MenuItem>
-          )}
-          <MenuDivider />
-          <MenuItem onPress={handleLogoutModalVisible}>Share</MenuItem>
-          <MenuDivider />
-          <MenuItem className="bg-red-400" onPress={hideMenu}>
-            Delete
+          <MenuItem onPress={isBookmark ? handleUnBookmark : handleBookmark}>
+            {isBookmark ? "Unbookmark" : "Bookmark"}
           </MenuItem>
+          <MenuDivider />
+          <MenuItem onPress={handleShare}>Share</MenuItem>
+          <MenuDivider />
+          <MenuItem onPress={handleDelete}>Delete</MenuItem>
         </Menu>
       </View>
 
       <View className="flex flex-row justify-between">
         <View className="flex flex-row m-2 items-center">
-          <Text className="text-black text-lg ">{formattedDate}</Text>
+          <Text className="text-black text-lg">{formattedDate}</Text>
         </View>
         <View className="flex flex-row m-2 items-center">
           <Text className="text-lg mr-1 text-secondary">By</Text>
           <Text className="text-xl">{owner.name}</Text>
         </View>
       </View>
-      <View className="">
-        <TouchableOpacity
-          className="bg-indigo-400 rounded-xl flex items-center mt-3"
-          onPress={handleRead}
-        >
-          <Text className="text-2xl p-2">Read article...</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity
+        className="bg-indigo-400 rounded-xl flex items-center mt-3"
+        onPress={handleRead}
+      >
+        <Text className="text-2xl p-2">Read article...</Text>
+      </TouchableOpacity>
     </View>
   );
 };

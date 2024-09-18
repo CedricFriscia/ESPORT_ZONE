@@ -50,10 +50,10 @@ const CustomModal = ({
             {logoutModalVisible ? (
               <View className="w-11/12 h-auto">
                 <Text className="mb-4 text-center text-lg font-semibold">
-                  Confirm Deconnection
+                  Confirmer la déconnexion
                 </Text>
                 <Text className="">
-                  Are you sure you want to be disconnected from the app?
+                  Êtes-vous sûr de vouloir vous déconnecter de l'application ?
                 </Text>
                 <View className="flex flex-row justify-between mt-4">
                   <TouchableOpacity
@@ -83,7 +83,7 @@ const CustomModal = ({
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    className="bg-blue-500 rounded-2xl p-2 mb-2"
+                    className="bg-red-500 rounded-2xl p-2 mb-2"
                     onPress={handleLogoutModalVisible}
                   >
                     <Text className="text-white font-bold text-center">

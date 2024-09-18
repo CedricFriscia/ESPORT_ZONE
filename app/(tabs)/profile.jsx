@@ -6,6 +6,7 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  getUsetArticlesCount,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link, useRouter } from "expo-router";
@@ -18,6 +19,7 @@ import CustomModal from "../../components/CustomModal";
 const Profile = () => {
   const [settingsModalVisible, setSettingsModalVisible] = useState(false);
   const [logoutModalVisible, setLogoutModalVisible] = useState(false);
+  const [countArticles, setCountArticles] = useState(0);
   const [user, setUser] = useState();
 
   const router = useRouter();
@@ -44,9 +46,20 @@ const Profile = () => {
         console.log(error);
       }
     };
-    fetchUserProfile();
-  }, []);
 
+    const fetchUserArticles = async () => {
+      try {
+        const articlesCount = await getUsetArticlesCount();
+        setCountArticles(articlesCount);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchUserProfile();
+    fetchUserArticles();
+  }, []);
+  console.log(countArticles);
   return (
     <LinearGradient
       colors={["#484bf3", "#161622"]}
@@ -99,7 +112,7 @@ const Profile = () => {
               </Text>
             </View>
             <View className="mx-auto mt-2">
-              <Text className="text-[140%] text-white">43</Text>
+              <Text className="text-[140%] text-white">{countArticles}</Text>
             </View>
             <View className="mx-auto mt-2">
               <Text className="text-3xl text-white">Articles</Text>

@@ -24,8 +24,11 @@ import view from "../assets/icons/icons8-visible-64.png";
 import pen from "../assets/icons/pen.png";
 import read from "../assets/icons/read.png";
 import more from "../assets/icons/icons8-plus-64.png";
+import arrowBack from "../assets/icons/icons8-gauche-50.png";
+import share from "../assets/icons/icons8-partage-50.png";
 
 export default {
+  share,
   play,
   bookmark,
   home,
@@ -52,4 +55,5 @@ export default {
   engrenage,
   pen,
   view,
+  arrowBack,
 };
