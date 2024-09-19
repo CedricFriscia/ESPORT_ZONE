@@ -21,6 +21,7 @@ import {
   deleteArticle,
 } from "../lib/useApi";
 import { useEffect } from "react";
+import ETicket from "./Ticket/Ticket";
 
 const ArticleCard = ({ id, name, created, writer }) => {
   const router = useRouter();
@@ -95,17 +96,10 @@ const ArticleCard = ({ id, name, created, writer }) => {
     });
   };
 
-  const handleShare = () => {
-    console.log("Sharing article", { id, name });
-    hideMenu();
-    router.push({
-      pathname: "/modal/shareModal",
-      params: { id: id, name: name },
-    });
-  };
-
   const openModal = () => {
+    hideMenu();
     setModalVisible(true);
+    console.log(modalVisible);
   };
 
   const closeModal = () => {
@@ -126,16 +120,34 @@ const ArticleCard = ({ id, name, created, writer }) => {
         }}
       >
         <View className="flex-1 justify-end">
-          <View className="h-[86%] bg-white rounded-t-3xl p-8 shadow-lg"></View>
+          <View className="h-[86%] bg-white rounded-t-3xl p-3 shadow-lg">
+            <View className="flex-1 flex-col">
+              <View className="flex-row justify-between mb-4">
+                <TouchableOpacity
+                  className="border-2 w-14 h-14 rounded-full items-center justify-center"
+                  onPress={closeModal}
+                >
+                  <Image
+                    className="w-8 h-8"
+                    source={icons.arrowBack}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </View>
+              <Text className="text-xl font-bold mx-auto">
+                Share to everyone
+              </Text>
+              <View className="flex-1 justify-center items-center px-4">
+                <ETicket eventName={name} date={formattedDate} articleId={id} />
+              </View>
+            </View>
+          </View>
         </View>
       </Modal>
       <Image
         source={images.esportPlayer}
         className="h-1/2 bg-black w-full rounded-xl border-2 border-black"
       />
-      <TouchableOpacity onPress={openModal}>
-        <Text>Test</Text>
-      </TouchableOpacity>
       <View className="flex flex-row items-center justify-between">
         <Text
           numberOfLines={2}
@@ -148,7 +160,7 @@ const ArticleCard = ({ id, name, created, writer }) => {
           visible={menuVisible}
           anchor={
             <TouchableOpacity onPress={showMenu}>
-              <Text className="flex text-3xl mr-4 mb-3">...</Text>
+              <Text className="flex text-4xl mr-4 mb-5">...</Text>
             </TouchableOpacity>
           }
           onRequestClose={hideMenu}
@@ -157,23 +169,23 @@ const ArticleCard = ({ id, name, created, writer }) => {
             {isBookmark ? "Unbookmark" : "Bookmark"}
           </MenuItem>
           <MenuDivider />
-          <MenuItem onPress={handleShare}>Share</MenuItem>
-          <MenuDivider />
           <MenuItem onPress={handleDelete}>Delete</MenuItem>
         </Menu>
       </View>
-
       <View className="flex flex-row justify-between">
         <View className="flex flex-row m-2 items-center">
           <Text className="text-black text-lg">{formattedDate}</Text>
         </View>
-        <View className="flex flex-row m-2 items-center">
-          <Text className="text-lg mr-1 text-secondary">By</Text>
-          <Text className="text-xl">{owner.name}</Text>
-        </View>
+        <TouchableOpacity onPress={openModal}>
+          <Image
+            className="flex text-3xl mr-4 mb-3 h-6 w-6"
+            source={icons.share}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
       </View>
       <TouchableOpacity
-        className="bg-indigo-400 rounded-xl flex items-center mt-3"
+        className="bg-indigo-400 rounded-xl flex items-center mt-1"
         onPress={handleRead}
       >
         <Text className="text-2xl p-2">Read article...</Text>

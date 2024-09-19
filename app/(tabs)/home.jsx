@@ -6,13 +6,14 @@ import {
   FlatList,
   RefreshControl,
   SafeAreaView,
+  Share,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import SearchBar from "../../components/SearchBar";
 import ArticleCard from "../../components/ArticleCard";
 import ModalCategory from "../../components/ModalCategory";
-import { getArticle, getArticleByName } from "../../lib/useApi";
+import { getArticles, getArticleByName } from "../../lib/useApi";
 
 const Home = () => {
   const [settingsCategoriesVisible, setSettingsCategoriesVisible] =
@@ -31,7 +32,7 @@ const Home = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      const fetchedArticles = await getArticle();
+      const fetchedArticles = await getArticles();
       setArticles(fetchedArticles);
     } catch (error) {
       console.log(error);

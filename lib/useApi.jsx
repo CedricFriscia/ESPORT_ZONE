@@ -4,7 +4,7 @@ import * as Sharing from "expo-sharing";
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
-export const getArticle = async () => {
+export const getArticles = async () => {
   try {
     const storageToken = await AsyncStorage.getItem("access_token");
 
