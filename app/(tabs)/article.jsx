@@ -23,7 +23,8 @@ const Article = () => {
     const fetchDataById = async () => {
       try {
         const article = await getArticleById(id);
-        setArticleData(article);
+        console.log(article);
+        setArticleData(article.data);
       } catch (error) {
         console.log(error);
       }
@@ -31,6 +32,8 @@ const Article = () => {
 
     fetchDataById();
   }, [id]);
+
+  console.log(articleData);
 
   if (!articleData) {
     return (
@@ -59,12 +62,12 @@ const Article = () => {
         </View>
         <View className="flex items-center">
           <Text className="text-white text-4xl font-bold font-plight text-center w-11/12 mb-4">
-            {articleData[0].name}
+            {articleData.name}
           </Text>
           <Text className="text-white text-xl font-light w-11/12 leading-7 tracking-wide">
             <RenderHtml
               contentWidth={width}
-              source={{ html: articleData[0].content }}
+              source={{ html: articleData.content }}
               baseStyle={{
                 color: "white",
                 fontSize: 18,

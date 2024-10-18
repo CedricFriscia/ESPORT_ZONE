@@ -36,8 +36,9 @@ const ArticleCard = ({ id, name, created, writer }) => {
 
   const showMenu = async () => {
     try {
-      const response = await isBookmarked(id);
-      setIsBookmark(response.isBookmarked);
+      const bookmarkStatus = await isBookmarked(id);
+      console.log(bookmarkStatus);
+      setIsBookmark(bookmarkStatus);
       setMenuVisible(true);
     } catch (error) {
       console.error("Error checking bookmark status:", error);

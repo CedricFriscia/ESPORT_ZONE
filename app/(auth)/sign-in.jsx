@@ -20,7 +20,7 @@ const SignIn = () => {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
-      const response = await axios.post(`${apiUrl}/login`, {
+      const response = await axios.post(`${apiUrl}/api/login`, {
         name: form.email,
         password: form.password,
       });

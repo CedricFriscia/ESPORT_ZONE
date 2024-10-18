@@ -8,12 +8,12 @@ export const getArticles = async () => {
   try {
     const storageToken = await AsyncStorage.getItem("access_token");
 
-    const response = await axios.get(`${apiUrl}/api/articles`, {
+    const response = await axios.get(`${apiUrl}/api/article/all`, {
       headers: {
         Authorization: `Bearer ${storageToken}`,
       },
     });
-    if (response.status === 200) {
+    if (response.data.status == "success") {
       return response.data;
     } else {
       throw new Error("Failed to fetch data");
@@ -27,15 +27,15 @@ export const getArticleByName = async (search) => {
   try {
     const storageToken = await AsyncStorage.getItem("access_token");
 
-    const response = await axios.get(`${apiUrl}/api/search/articles`, {
+    const response = await axios.get(`${apiUrl}/api/article/name`, {
       headers: {
         Authorization: `Bearer ${storageToken}`,
       },
       params: {
-        search: search,
+        name: search,
       },
     });
-    if (response.status === 200) {
+    if (response.data.status === "success") {
       return response.data;
     } else {
       throw new Error("Failed to fetch data");
@@ -49,15 +49,16 @@ export const getArticleById = async (id) => {
   try {
     const storageToken = await AsyncStorage.getItem("access_token");
 
-    const response = await axios.get(`${apiUrl}/api/article`, {
+    const response = await axios.get(`${apiUrl}/api/article/one`, {
       headers: {
         Authorization: `Bearer ${storageToken}`,
       },
       params: {
-        id: id,
+        article_id: id,
       },
     });
-    if (response.status === 200) {
+    console.log(response);
+    if (response.data.status === "success") {
       return response.data;
     } else {
       throw new Error("Failed to fetch data");
@@ -90,12 +91,12 @@ export const getBookmarks = async () => {
   try {
     const storageToken = await AsyncStorage.getItem("access_token");
 
-    const response = await axios.get(`${apiUrl}/api/articles/bookmarks`, {
+    const response = await axios.get(`${apiUrl}/api/bookmarked/user/articles`, {
       headers: {
         Authorization: `Bearer ${storageToken}`,
       },
     });
-    if (response.status === 200) {
+    if (response.data.status === "success") {
       return response.data;
     } else {
       throw new Error("Failed to fetch data");
@@ -128,15 +129,15 @@ export const getUserById = async (id) => {
   try {
     const storageToken = await AsyncStorage.getItem("access_token");
 
-    const response = await axios.get(`${apiUrl}/api/user`, {
+    const response = await axios.get(`${apiUrl}/api/user/one`, {
       headers: {
         Authorization: `Bearer ${storageToken}`,
       },
       params: {
-        userId: id,
+        user_id: id,
       },
     });
-    if (response.status === 200) {
+    if (response.data.status == "success") {
       return response.data;
     } else {
       throw new Error("Failed to fetch data");
@@ -151,9 +152,9 @@ export const bookmarkArticle = async (id) => {
     const storageToken = await AsyncStorage.getItem("access_token");
 
     const response = await axios.post(
-      `${apiUrl}/api/articles/bookmark`,
+      `${apiUrl}/api/bookmark`,
       {
-        articleId: id,
+        article_id: id,
       },
       {
         headers: {
@@ -178,9 +179,9 @@ export const unBookmarkArticle = async (id) => {
     const storageToken = await AsyncStorage.getItem("access_token");
 
     const response = await axios.post(
-      `${apiUrl}/api/articles/unbookmark`,
+      `${apiUrl}/api/unbookmark`,
       {
-        articleId: id,
+        article_id: id,
       },
       {
         headers: {
@@ -190,7 +191,7 @@ export const unBookmarkArticle = async (id) => {
     );
 
     if (response.status === 200) {
-      return response.data;
+      return response;
     } else {
       throw new Error("Failed to fetch data");
     }
@@ -273,21 +274,21 @@ export const shareArticle = async (id) => {
     console.error("Erreur lors du partage", error);
   }
 };
-
 export const isBookmarked = async (id) => {
   try {
     const storageToken = await AsyncStorage.getItem("access_token");
 
-    const response = await axios.get(`${apiUrl}/api/articles/bookmarked`, {
+    const response = await axios.get(`${apiUrl}/api/bookmarked`, {
       headers: {
         Authorization: `Bearer ${storageToken}`,
       },
       params: {
-        articleId: id,
+        article_id: id,
       },
     });
-    if (response.status === 200) {
-      return response.data;
+
+    if (response.data.status === "success") {
+      return response.data.isBookmarked;
     } else {
       throw new Error("Failed to fetch data");
     }

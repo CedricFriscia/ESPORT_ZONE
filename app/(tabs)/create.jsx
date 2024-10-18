@@ -69,7 +69,7 @@ const Create = () => {
       formData.append("content", descHTML);
 
       const response = await axios.post(
-        `${apiUrl}/api/create/article`,
+        `${apiUrl}/api/article/create`,
         formData,
         {
           headers: {

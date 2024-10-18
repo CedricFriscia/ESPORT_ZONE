@@ -20,7 +20,7 @@ const Bookmark = () => {
     const fetchBookmarks = async () => {
       try {
         const bookmarksData = await getBookmarks();
-        setBookmarks(bookmarksData);
+        setBookmarks(bookmarksData.data);
       } catch (error) {
         console.log(error);
       }
@@ -28,6 +28,8 @@ const Bookmark = () => {
 
     fetchBookmarks();
   }, [refreshing]);
+
+  console.log(bookmarks);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);

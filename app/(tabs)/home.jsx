@@ -18,7 +18,10 @@ import { getArticles, getArticleByName } from "../../lib/useApi";
 const Home = () => {
   const [settingsCategoriesVisible, setSettingsCategoriesVisible] =
     useState(false);
-  const [articles, setArticles] = useState([]);
+  const [articlesResponse, setArticlesResponse] = useState({
+    data: [],
+    total_count: 0,
+  });
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -32,8 +35,8 @@ const Home = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      const fetchedArticles = await getArticles();
-      setArticles(fetchedArticles);
+      const fetchedArticlesResponse = await getArticles();
+      setArticlesResponse(fetchedArticlesResponse);
     } catch (error) {
       console.log(error);
     }
@@ -41,8 +44,8 @@ const Home = () => {
 
   const fetchDataByName = useCallback(async (searchText) => {
     try {
-      const fetchedArticles = await getArticleByName(searchText);
-      setArticles(fetchedArticles);
+      const fetchedArticlesResponse = await getArticleByName(searchText);
+      setArticlesResponse(fetchedArticlesResponse);
     } catch (error) {
       console.log(error);
     }
@@ -105,14 +108,14 @@ const Home = () => {
               tintColor="#FFF"
             />
           }
-          data={articles}
+          data={articlesResponse.data}
           style={{ flex: 1 }}
           renderItem={({ item: article }) => (
             <ArticleCard
               name={article.name}
               id={article.id}
               created={article.created_at}
-              writer={article.user_id}
+              content={article.content}
             />
           )}
           keyExtractor={(article) => article.id.toString()}

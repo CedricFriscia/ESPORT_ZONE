@@ -23,7 +23,7 @@ const SignUp = () => {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
-      const response = await axios.post(`${apiUrl}/register`, {
+      const response = await axios.post(`${apiUrl}/api/register`, {
         name: form.username,
         email: form.email,
         password: form.password,
