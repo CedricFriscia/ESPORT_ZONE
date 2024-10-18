@@ -11,9 +11,7 @@ const RootLayout = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener("state", (e) => {
-      console.log("Navigation state changed", e.data.state);
-    });
+    const unsubscribe = navigation.addListener("state", (e) => {});
 
     return unsubscribe;
   }, [navigation]);

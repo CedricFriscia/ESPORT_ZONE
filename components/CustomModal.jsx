@@ -21,7 +21,6 @@ const CustomModal = ({
 
       if (response.status === 200) {
         AsyncStorage.removeItem("token");
-        console.log("Logout successfully");
         router.push("/");
         onClose();
       }

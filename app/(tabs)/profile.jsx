@@ -59,7 +59,7 @@ const Profile = () => {
     fetchUserProfile();
     fetchUserArticles();
   }, []);
-  console.log(countArticles);
+
   return (
     <LinearGradient
       colors={["#484bf3", "#161622"]}

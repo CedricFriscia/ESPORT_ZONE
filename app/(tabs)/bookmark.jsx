@@ -29,8 +29,6 @@ const Bookmark = () => {
     fetchBookmarks();
   }, [refreshing]);
 
-  console.log(bookmarks);
-
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {

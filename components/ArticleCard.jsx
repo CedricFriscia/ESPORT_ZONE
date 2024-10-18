@@ -37,7 +37,6 @@ const ArticleCard = ({ id, name, created, writer }) => {
   const showMenu = async () => {
     try {
       const bookmarkStatus = await isBookmarked(id);
-      console.log(bookmarkStatus);
       setIsBookmark(bookmarkStatus);
       setMenuVisible(true);
     } catch (error) {
@@ -100,7 +99,6 @@ const ArticleCard = ({ id, name, created, writer }) => {
   const openModal = () => {
     hideMenu();
     setModalVisible(true);
-    console.log(modalVisible);
   };
 
   const closeModal = () => {

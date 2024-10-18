@@ -23,7 +23,6 @@ const Article = () => {
     const fetchDataById = async () => {
       try {
         const article = await getArticleById(id);
-        console.log(article);
         setArticleData(article.data);
       } catch (error) {
         console.log(error);
@@ -32,8 +31,6 @@ const Article = () => {
 
     fetchDataById();
   }, [id]);
-
-  console.log(articleData);
 
   if (!articleData) {
     return (
@@ -54,7 +51,13 @@ const Article = () => {
         <View className="flex flex-row justify-between mb-12">
           <View className="m-2">
             <Text className="text-lg text-secondary">Cedric Friscia</Text>
-            <Text className="text-white">14 novembre 1998</Text>
+            <Text className="text-white">
+              {new Date(articleData.created_at).toLocaleDateString("fr-FR", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              })}
+            </Text>
           </View>
           <View className="flex flex-row justify-between items-center">
             <CustomTag name={"Rocket League"} />

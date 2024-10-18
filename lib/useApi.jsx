@@ -57,7 +57,6 @@ export const getArticleById = async (id) => {
         article_id: id,
       },
     });
-    console.log(response);
     if (response.data.status === "success") {
       return response.data;
     } else {
