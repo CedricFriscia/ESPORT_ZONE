@@ -17,36 +17,27 @@
       "supportsTablet": true,
       "package": "com.jsm.aora",
       "infoPlist": {
-        "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access your camera",
-        "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone"
-      }
+        "NSCameraUsageDescription": "This app needs access to camera to scan QR codes"
+      },
+      "bundleIdentifier": "com.anonymous.ez"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["CAMERA", "RECORD_AUDIO"]
+      "permissions": ["CAMERA", "android.permission.CAMERA"],
+      "package": "com.anonymous.ez"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      [
-        "expo-camera",
-        {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
-          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
-          "recordAudioAndroid": true
-        }
-      ],
       "expo-router",
-      [
-        "expo-barcode-scanner",
-        {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access camera."
-        }
-      ]
+      "expo-barcode-scanner",
+      {
+        "cameraPermission": "Permettre à $(PRODUCT_NAME) d'accéder à votre caméra."
+      }
     ]
   }
 }
