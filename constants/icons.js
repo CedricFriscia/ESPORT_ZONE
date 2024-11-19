@@ -26,6 +26,7 @@ import read from "../assets/icons/read.png";
 import more from "../assets/icons/icons8-plus-64.png";
 import arrowBack from "../assets/icons/icons8-gauche-50.png";
 import share from "../assets/icons/icons8-partage-50.png";
+import photo from "../assets/icons/icons8-photo-50.png";
 
 export default {
   share,
@@ -56,4 +57,5 @@ export default {
   pen,
   view,
   arrowBack,
+  photo,
 };

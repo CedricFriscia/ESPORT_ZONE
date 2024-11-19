@@ -127,6 +127,13 @@ export const getUserProfile = async () => {
 export const getUserById = async (id) => {
   try {
     const storageToken = await AsyncStorage.getItem("access_token");
+    console.log("Token récupéré:", storageToken);
+
+    console.log("Appel API avec params:", {
+      url: `${apiUrl}/api/user/one`,
+      id: id,
+      token: `Bearer ${storageToken}`,
+    });
 
     const response = await axios.get(`${apiUrl}/api/user/one`, {
       headers: {
@@ -136,12 +143,20 @@ export const getUserById = async (id) => {
         user_id: id,
       },
     });
-    if (response.data.status == "success") {
+
+    console.log("Réponse API:", response.data);
+
+    if (response.data.status === "success") {
       return response.data;
     } else {
       throw new Error("Failed to fetch data");
     }
   } catch (error) {
+    console.error("Erreur détaillée:", {
+      message: error.message,
+      response: error.response?.data,
+      status: error.response?.status,
+    });
     throw new Error(error.message);
   }
 };

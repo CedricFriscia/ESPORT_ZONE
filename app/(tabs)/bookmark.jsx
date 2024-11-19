@@ -1,16 +1,20 @@
 import {
   View,
   Text,
+  Image,
   SafeAreaView,
   ScrollView,
   FlatList,
   RefreshControl,
+  TouchableOpacity,
 } from "react-native";
 import ArticleCard from "../../components/ArticleCard";
 import React, { useEffect, useState, useCallback } from "react";
 import SearchBar from "../../components/SearchBar";
 import { LinearGradient } from "expo-linear-gradient";
 import { getBookmarks } from "../../lib/useApi";
+import { icons } from "../../constants";
+import { router } from "expo-router";
 
 const Bookmark = () => {
   const [bookmarks, setBookmarks] = useState(null);
@@ -51,8 +55,20 @@ const Bookmark = () => {
             <Text className="text-secondary">E</Text>Z
           </Text>
         </View>
-        <View className="mb-2">
-          <SearchBar handleSearch={handleSearch} />
+        <View className="mb-2 flex-row items-center justify-between">
+          <View className="flex-1">
+            <SearchBar handleSearch={handleSearch} />
+          </View>
+          <TouchableOpacity
+            onPress={() => router.push("/scanner")}
+            className="mr-8 border-white border p-3 rounded-full"
+          >
+            <Image
+              className="w-8 h-8 "
+              source={icons.photo}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
         </View>
         <FlatList
           refreshControl={

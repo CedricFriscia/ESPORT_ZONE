@@ -17,17 +17,17 @@ import {
   bookmarkArticle,
   unBookmarkArticle,
   isBookmarked,
-  getUserById,
+  getArticleById,
   deleteArticle,
 } from "../lib/useApi";
 import { useEffect } from "react";
 import ETicket from "./Ticket/Ticket";
 
-const ArticleCard = ({ id, name, created, writer }) => {
+const ArticleCard = ({ id, created }) => {
   const router = useRouter();
   const [menuVisible, setMenuVisible] = useState(false);
   const [isBookmark, setIsBookmark] = useState(false);
-  const [owner, setOwner] = useState("");
+  const [articleData, setArticleData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
 
   const hideMenu = () => {
@@ -45,20 +45,20 @@ const ArticleCard = ({ id, name, created, writer }) => {
   };
 
   useEffect(() => {
-    const fetchOwnerData = async () => {
+    const fetchArticleData = async () => {
       try {
-        const ownerData = await getUserById(writer);
-        if (ownerData && ownerData.length > 0) {
-          setOwner(ownerData[0]);
+        const articleData = await getArticleById(id);
+        if (articleData) {
+          setArticleData(articleData);
         } else {
-          console.log("No user found");
+          console.log("No article found");
         }
       } catch (error) {
-        console.error("Error fetching owner data:", error);
+        console.error("Error fetching article data:", error);
       }
     };
-    fetchOwnerData();
-  }, [writer]);
+    fetchArticleData();
+  }, [id]);
 
   const handleBookmark = async () => {
     try {
@@ -137,7 +137,12 @@ const ArticleCard = ({ id, name, created, writer }) => {
                 Share to everyone
               </Text>
               <View className="flex-1 justify-center items-center px-4">
-                <ETicket eventName={name} date={formattedDate} articleId={id} />
+                <ETicket
+                  eventName={articleData?.data?.name}
+                  date={formattedDate}
+                  articleId={id}
+                  user={articleData?.data?.users[0]}
+                />
               </View>
             </View>
           </View>
@@ -153,7 +158,7 @@ const ArticleCard = ({ id, name, created, writer }) => {
           ellipsizeMode="tail"
           className="text-black text-2xl m-2 w-4/5"
         >
-          {name}
+          {articleData?.data?.name}
         </Text>
         <Menu
           visible={menuVisible}

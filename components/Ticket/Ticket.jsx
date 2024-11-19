@@ -11,7 +11,7 @@ import QRCode from "react-qr-code";
 import ViewShot from "react-native-view-shot";
 import { useState } from "react";
 
-const ETicket = ({ eventName, date, articleId }) => {
+const ETicket = ({ eventName, date, articleId, user }) => {
   const [rounded, setRounded] = useState(true);
 
   const viewShotRef = useRef();
@@ -66,7 +66,7 @@ const ETicket = ({ eventName, date, articleId }) => {
                 className="w-10 h-10 rounded-full mr-2"
               />
               <View>
-                <Text className="text-white">John wick</Text>
+                <Text className="text-white">{user.name}</Text>
               </View>
             </View>
           </View>
