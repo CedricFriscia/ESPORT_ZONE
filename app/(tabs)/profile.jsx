@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link, useRouter } from "expo-router";
-import { getUserProfile, getUsetArticlesCount } from "../../lib/useApi";
+import { getUserProfile, getUserArticlesCount } from "../../lib/useApi";
 
 import { icons, images } from "../../constants";
 
@@ -49,7 +49,7 @@ const Profile = () => {
 
     const fetchUserArticles = async () => {
       try {
-        const articlesCount = await getUsetArticlesCount();
+        const articlesCount = await getUserArticlesCount();
         setCountArticles(articlesCount);
       } catch (error) {
         console.log(error);

@@ -108,6 +108,15 @@ const TabsLayout = () => {
           ),
         }}
       />
+      <Tabs.Screen
+        name="scanner"
+        options={{
+          title: "Scanner",
+          headerShown: false,
+          href: null,
+          tabBarStyle: { display: "none" },
+        }}
+      />
     </Tabs>
   );
 };

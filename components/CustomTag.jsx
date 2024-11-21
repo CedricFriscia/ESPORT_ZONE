@@ -2,7 +2,7 @@
 import { Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 
-const CustomTag = ({ name }) => {
+const CustomTag = ({ name = "" }) => {
   return (
     <View className="inline-flex m-4">
       <TouchableOpacity className="border border-white rounded-2xl px-2 py-1 bg-indigo-400">
