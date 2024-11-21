@@ -1,65 +1,87 @@
-import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Button } from "react-native";
-import { BarCodeScanner } from "expo-barcode-scanner";
+import { useState, useEffect } from "react";
+import { StyleSheet, Text, View, Button, Alert } from "react-native";
+import { Camera } from "expo-camera";
 
-const Scanner = () => {
+export default function ScannerTab() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
+  // Demande des permissions pour la caméra
   useEffect(() => {
-    const getBarCodeScannerPermissions = async () => {
+    const requestPermission = async () => {
       try {
-        const { status } = await BarCodeScanner.requestPermissionsAsync();
+        const { status } = await Camera.requestCameraPermissionsAsync();
         setHasPermission(status === "granted");
+
+        if (status !== "granted") {
+          Alert.alert(
+            "Permission refusée",
+            "Veuillez autoriser l'accès à la caméra dans les paramètres.",
+            [{ text: "OK" }]
+          );
+        }
       } catch (error) {
-        console.error("Erreur lors de la demande de permission:", error);
-        setHasPermission(false);
+        console.error("Erreur lors de la demande de permissions : ", error);
+        Alert.alert(
+          "Erreur",
+          "Impossible d'accéder à la caméra. Veuillez réessayer.",
+          [{ text: "OK" }]
+        );
       }
     };
 
-    getBarCodeScannerPermissions();
+    requestPermission(); // Appeler la fonction au chargement du composant
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = ({ data }) => {
     setScanned(true);
-    alert(`Code-barres de type ${type} et données ${data} a été scanné !`);
+    alert(`QR code scanné : ${data}`);
   };
 
   if (hasPermission === null) {
-    return <Text style={styles.text}>Demande d'accès à la caméra...</Text>;
+    return (
+      <View style={styles.container}>
+        <Text>Demande d'accès à la caméra...</Text>
+      </View>
+    );
   }
 
   if (hasPermission === false) {
-    return <Text style={styles.text}>Pas d'accès à la caméra</Text>;
+    return (
+      <View style={styles.container}>
+        <Text>Accès à la caméra refusé</Text>
+        <Button
+          title="Réessayer"
+          onPress={() => Camera.requestCameraPermissionsAsync()}
+        />
+      </View>
+    );
   }
 
   return (
     <View style={styles.container}>
-      <BarCodeScanner
+      <Camera
+        style={styles.camera}
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}
+        barCodeScannerSettings={{
+          barCodeTypes: [Camera.Constants.BarCodeType.qr],
+        }}
       />
       {scanned && (
-        <Button
-          title={"Appuyez pour scanner à nouveau"}
-          onPress={() => setScanned(false)}
-        />
+        <Button title="Scanner à nouveau" onPress={() => setScanned(false)} />
       )}
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
     justifyContent: "center",
+    alignItems: "center",
   },
-  text: {
-    fontSize: 16,
-    textAlign: "center",
-    margin: 20,
+  camera: {
+    flex: 1,
+    width: "100%",
   },
 });
-
-export default Scanner;

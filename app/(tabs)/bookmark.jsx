@@ -60,11 +60,11 @@ const Bookmark = () => {
             <SearchBar handleSearch={handleSearch} />
           </View>
           <TouchableOpacity
-            onPress={() => router.push("/scanner")}
+            onPress={() => router.push("scanner")} // Version courte si vous êtes déjà dans (tabs)
             className="mr-8 border-white border p-3 rounded-full"
           >
             <Image
-              className="w-8 h-8 "
+              className="w-8 h-8"
               source={icons.photo}
               resizeMode="contain"
             />

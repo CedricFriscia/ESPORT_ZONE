@@ -15,29 +15,29 @@
     },
     "ios": {
       "supportsTablet": true,
-      "package": "com.jsm.aora",
+      "bundleIdentifier": "com.anonymous.ez",
       "infoPlist": {
-        "NSCameraUsageDescription": "This app needs access to camera to scan QR codes"
-      },
-      "bundleIdentifier": "com.anonymous.ez"
+        "NSCameraUsageDescription": "Cette application nécessite l'accès à la caméra pour scanner les codes QR"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["CAMERA", "android.permission.CAMERA"],
-      "package": "com.anonymous.ez"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
+      "package": "com.anonymous.ez",
+      "permissions": ["CAMERA"]
     },
     "plugins": [
       "expo-router",
-      "expo-barcode-scanner",
-      {
-        "cameraPermission": "Permettre à $(PRODUCT_NAME) d'accéder à votre caméra."
-      }
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "recordAudioAndroid": true
+        }
+      ]
     ]
   }
 }

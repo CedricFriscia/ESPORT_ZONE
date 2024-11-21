@@ -124,6 +124,25 @@ export const getUserProfile = async () => {
   }
 };
 
+export const getUserArticlesCount = async () => {
+  try {
+    const storageToken = await AsyncStorage.getItem("access_token");
+
+    const response = await axios.get(`${apiUrl}/api/article/user`, {
+      headers: {
+        Authorization: `Bearer ${storageToken}`,
+      },
+    });
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error("Failed to fetch data");
+    }
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
 export const getUserById = async (id) => {
   try {
     const storageToken = await AsyncStorage.getItem("access_token");

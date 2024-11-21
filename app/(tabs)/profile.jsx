@@ -6,11 +6,10 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  getUsetArticlesCount,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link, useRouter } from "expo-router";
-import { getUserProfile } from "../../lib/useApi";
+import { getUserProfile, getUsetArticlesCount } from "../../lib/useApi";
 
 import { icons, images } from "../../constants";
 
@@ -41,6 +40,7 @@ const Profile = () => {
     const fetchUserProfile = async () => {
       try {
         const userData = await getUserProfile();
+        console.log(userData);
         setUser(userData);
       } catch (error) {
         console.log(error);
@@ -95,7 +95,7 @@ const Profile = () => {
               <View className="flex gap-2 pt-4 items-center">
                 <Text className="text-slate-300">Ravi de vous voir !</Text>
                 <Text className="text-slate-300 text-6xl">
-                  {user != null ? user.name : "..."}
+                  {user?.data?.name || "..."}
                 </Text>
                 <View className="flex flex-row justify-center items-center gap-2">
                   <Text className="text-2xl text-white">"</Text>
@@ -112,7 +112,9 @@ const Profile = () => {
               </Text>
             </View>
             <View className="mx-auto mt-2">
-              <Text className="text-[140%] text-white">{countArticles}</Text>
+              <Text className="text-4xl text-white text-center mt-2">
+                {countArticles}
+              </Text>
             </View>
             <View className="mx-auto mt-2">
               <Text className="text-3xl text-white">Articles</Text>
