@@ -1,75 +1,55 @@
-import { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Button, Alert } from "react-native";
-import { Camera } from "expo-camera";
+import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
+import { useState } from "react";
+import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-export default function ScannerTab() {
-  const [hasPermission, setHasPermission] = useState(null);
+export default function Scanner() {
+  const [facing, setFacing] = useState("back");
+  const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
 
-  // Demande des permissions pour la caméra
-  useEffect(() => {
-    const requestPermission = async () => {
-      try {
-        const { status } = await Camera.requestCameraPermissionsAsync();
-        setHasPermission(status === "granted");
+  if (!permission) {
+    return <View />;
+  }
 
-        if (status !== "granted") {
-          Alert.alert(
-            "Permission refusée",
-            "Veuillez autoriser l'accès à la caméra dans les paramètres.",
-            [{ text: "OK" }]
-          );
-        }
-      } catch (error) {
-        console.error("Erreur lors de la demande de permissions : ", error);
-        Alert.alert(
-          "Erreur",
-          "Impossible d'accéder à la caméra. Veuillez réessayer.",
-          [{ text: "OK" }]
-        );
-      }
-    };
+  if (!permission.granted) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.message}>
+          We need your permission to show the camera
+        </Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
+    );
+  }
 
-    requestPermission(); // Appeler la fonction au chargement du composant
-  }, []);
+  function toggleCameraFacing() {
+    setFacing((current) => (current === "back" ? "front" : "back"));
+  }
 
-  const handleBarCodeScanned = ({ data }) => {
+  const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    alert(`QR code scanné : ${data}`);
+    alert(`Code scanné : ${data}`);
   };
-
-  if (hasPermission === null) {
-    return (
-      <View style={styles.container}>
-        <Text>Demande d'accès à la caméra...</Text>
-      </View>
-    );
-  }
-
-  if (hasPermission === false) {
-    return (
-      <View style={styles.container}>
-        <Text>Accès à la caméra refusé</Text>
-        <Button
-          title="Réessayer"
-          onPress={() => Camera.requestCameraPermissionsAsync()}
-        />
-      </View>
-    );
-  }
 
   return (
     <View style={styles.container}>
-      <Camera
+      <CameraView
         style={styles.camera}
+        facing={facing}
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         barCodeScannerSettings={{
-          barCodeTypes: [Camera.Constants.BarCodeType.qr],
+          barCodeTypes: ["qr"],
         }}
-      />
-      {scanned && (
-        <Button title="Scanner à nouveau" onPress={() => setScanned(false)} />
-      )}
+      >
+        {scanned && (
+          <Button title="Scanner à nouveau" onPress={() => setScanned(false)} />
+        )}
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+            <Text style={styles.text}>Flip Camera</Text>
+          </TouchableOpacity>
+        </View>
+      </CameraView>
     </View>
   );
 }
@@ -78,10 +58,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
+  },
+  message: {
+    textAlign: "center",
+    paddingBottom: 10,
   },
   camera: {
     flex: 1,
-    width: "100%",
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    margin: 64,
+  },
+  button: {
+    flex: 1,
+    alignSelf: "flex-end",
+    alignItems: "center",
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "white",
   },
 });
