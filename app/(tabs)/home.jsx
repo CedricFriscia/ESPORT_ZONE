@@ -6,16 +6,19 @@ import {
   FlatList,
   RefreshControl,
   SafeAreaView,
-  Share,
+  Image,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import SearchBar from "../../components/SearchBar";
 import ArticleCard from "../../components/ArticleCard";
 import ModalCategory from "../../components/ModalCategory";
+import { icons } from "../../constants";
 import { getArticles, getArticleByName } from "../../lib/useApi";
+import { useRouter } from "expo-router";
 
 const Home = () => {
+  const router = useRouter();
   const [settingsCategoriesVisible, setSettingsCategoriesVisible] =
     useState(false);
   const [articlesResponse, setArticlesResponse] = useState({
@@ -96,8 +99,18 @@ const Home = () => {
             <Text className="text-secondary">E</Text>Z
           </Text>
         </View>
-        <View className="mb-2">
+        <View className="mb-2 flex-row items-center justify-between">
           <SearchBar handleSearch={handleSearch} />
+          <TouchableOpacity
+            onPress={() => router.push("scanner")}
+            className="mr-16 border-white border p-3 rounded-full"
+          >
+            <Image
+              className="w-8 h-8"
+              source={icons.photo}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
         </View>
         <FlatList
           refreshControl={

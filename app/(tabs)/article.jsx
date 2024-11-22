@@ -9,15 +9,33 @@ import {
 } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { getArticleById } from "../../lib/useApi";
-import RenderHtml from "react-native-render-html";
+import RenderHtml, { defaultSystemFonts } from "react-native-render-html";
 import { useWindowDimensions } from "react-native";
 
 const Article = () => {
   const [articleData, setArticleData] = useState(null);
-
   const { id } = useLocalSearchParams();
-
   const { width } = useWindowDimensions();
+
+  // Configuration du style HTML
+  const tagsStyles = {
+    body: {
+      color: "white",
+      fontSize: 18,
+      lineHeight: 28, // Augmenté pour une meilleure lisibilité
+      paddingTop: 10,
+    },
+    p: {
+      marginBottom: 15, // Ajoute de l'espace entre les paragraphes
+    },
+  };
+
+  // Configuration des options de rendu
+  const renderersProps = {
+    img: {
+      enableExperimentalPercentWidth: true,
+    },
+  };
 
   useEffect(() => {
     const fetchDataById = async () => {
@@ -67,18 +85,21 @@ const Article = () => {
           <Text className="text-white text-4xl font-bold font-plight text-center w-11/12 mb-4">
             {articleData.name}
           </Text>
-          <Text className="text-white text-xl font-light w-11/12 leading-7 tracking-wide">
+          <View className="w-11/12">
             <RenderHtml
               contentWidth={width}
               source={{ html: articleData.content }}
-              baseStyle={{
-                color: "white",
-                fontSize: 18,
-                lineHeight: 18,
-                paddingTop: 10,
+              tagsStyles={tagsStyles}
+              renderersProps={renderersProps}
+              systemFonts={defaultSystemFonts}
+              defaultTextProps={{
+                selectable: true,
               }}
+              // Optimisation du rendu
+              enableExperimentalMarginCollapsing={true}
+              enableExperimentalGhostLinesPrevention={true}
             />
-          </Text>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

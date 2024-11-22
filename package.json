@@ -47,7 +47,8 @@
     "react-native-view-shot": "~4.0.0",
     "react-native-vision-camera": "^4.6.1",
     "react-native-webview": "13.12.4",
-    "react-qr-code": "^2.0.15"
+    "react-qr-code": "^2.0.15",
+    "vision-camera-code-scanner": "^0.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

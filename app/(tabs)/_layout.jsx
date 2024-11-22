@@ -117,6 +117,15 @@ const TabsLayout = () => {
           tabBarStyle: { display: "none" },
         }}
       />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: "Settings",
+          headerShown: false,
+          href: null,
+          tabBarStyle: { display: "none" },
+        }}
+      />
     </Tabs>
   );
 };
